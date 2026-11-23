@@ -3,6 +3,8 @@
 > **Projeto:** Engenharia de Prompt Especializada em Atendimento Bancário / Fintech  
 > **Papel:** Expert em Atendimento ao Cliente e CX Bancário  
 > **Base Metodológica:** Desafio Criativo de Prompting (`docs/`)  
+> **Repositório GitHub:** [https://github.com/PedroZef/agente-ia-atendimento-ao-cliente.git](https://github.com/PedroZef/agente-ia-atendimento-ao-cliente.git)  
+> **Apresentação no Gemini Canvas:** [https://share.gemini.google/x6xbDsLcnR6z](https://share.gemini.google/x6xbDsLcnR6z)  
 > **Padrão de Design & Linguagem:** Inspirado em Design Systems Fintech de Alta Confiabilidade (*Revolut / Stripe UI Principles*)
 
 ---
@@ -80,11 +82,14 @@ Conforme estipulado no Passo 3 das referências:
 
 ## 🖥️ Apresentação Interativa de Slides
 
-A apresentação executiva e técnica está disponível no diretório [`slides/index.html`](file:///c:/Users/zefpe/Documents/agente-ia-atendimento-ao-cliente/slides/index.html):
-- **Navegação por Teclado:** Setas `[←]` e `[→]`, barra de espaço, ou `[Home]` / `[End]`.
-- **Modo Tela Cheia:** Pressione `[F]` ou use o botão na barra inferior.
-- **Gráficos Interativos:** Visualização radar com Chart.js de conformidade e métricas de homologação.
-- **Visualização Rápida:** Basta abrir o arquivo `slides/index.html` em qualquer navegador (Chrome, Edge, Firefox, Safari).
+A apresentação executiva e técnica está disponível tanto localmente quanto na nuvem:
+- **Versão Interativa Offline (HTML5/Chart.js):** [`slides/index.html`](file:///c:/Users/zefpe/Documents/agente-ia-atendimento-ao-cliente/slides/index.html)
+  - **Navegação por Teclado:** Setas `[←]` e `[→]`, barra de espaço, ou `[Home]` / `[End]`.
+  - **Modo Tela Cheia:** Pressione `[F]` ou use o botão na barra inferior.
+  - **Gráficos Interativos:** Visualização radar com Chart.js de conformidade e métricas de homologação.
+  - **Visualização Rápida:** Basta abrir o arquivo `slides/index.html` em qualquer navegador (Chrome, Edge, Firefox, Safari).
+- **Versão Online no Google Gemini Canvas:** [https://share.gemini.google/x6xbDsLcnR6z](https://share.gemini.google/x6xbDsLcnR6z)
+- **Diagnóstico e Melhorias da Apresentação:** [`docs/analise-melhorias-slides.md`](file:///c:/Users/zefpe/Documents/agente-ia-atendimento-ao-cliente/docs/analise-melhorias-slides.md)
 
 ---
 
