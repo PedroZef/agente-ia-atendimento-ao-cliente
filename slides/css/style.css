@@ -78,7 +78,7 @@
         .slide {
             position: absolute;
             inset: 0;
-            padding: 48px 64px 72px;
+            padding: 44px 64px 84px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -149,43 +149,66 @@
             max-width: 800px;
         }
 
-        /* Rodapé do Slide */
+        /* Rodapé do Slide Centralizado */
         .slide-footer {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
-            padding-top: 16px;
+            position: relative;
+            padding-top: 14px;
             border-top: 1px solid var(--border-subtle);
-            font-size: 0.8rem;
+            font-size: 0.82rem;
             color: var(--text-muted);
+            width: 100%;
+            text-align: center;
         }
 
         .slide-footer-author {
-            font-weight: 500;
+            font-weight: 600;
             color: var(--text-secondary);
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
+            text-align: center;
+            margin: 0 auto;
         }
 
         .slide-footer-author span {
-            color: var(--brand-primary);
+            color: var(--text-primary);
+            letter-spacing: 0.3px;
         }
 
-        /* Controles de Navegação Flutuantes */
+        .slide-footer-page {
+            position: absolute;
+            right: 0;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 768px) {
+            .slide-footer-page {
+                display: none;
+            }
+        }
+
+        /* Controles de Navegação Flutuantes Centralizados */
         .controls {
             position: fixed;
-            bottom: 24px;
-            right: 24px;
+            bottom: 22px;
+            left: 50%;
+            transform: translateX(-50%);
             display: flex;
             align-items: center;
-            gap: 12px;
+            justify-content: center;
+            gap: 14px;
             z-index: 999;
-            background: rgba(16, 22, 35, 0.85);
-            backdrop-filter: blur(12px);
-            padding: 8px 16px;
+            background: rgba(16, 22, 35, 0.92);
+            backdrop-filter: blur(16px);
+            padding: 8px 20px;
             border-radius: var(--radius-full);
-            border: 1px solid var(--border-subtle);
+            border: 1px solid var(--border-highlight);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
         }
 
         .nav-btn {
