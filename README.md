@@ -2,7 +2,7 @@
 
 > **Projeto:** Engenharia de Prompt Especializada em Atendimento Bancário / Fintech  
 > **Papel:** Expert em Atendimento ao Cliente e CX Bancário  
-> **Base Metodológica:** Desafio Criativo de Prompting (`docs/`)  
+> **Base Metodológica:** Desafio Criativo de Prompting ([`docs/`](docs/))  
 > **Repositório GitHub:** [https://github.com/PedroZef/agente-ia-atendimento-ao-cliente.git](https://github.com/PedroZef/agente-ia-atendimento-ao-cliente.git)  
 > **Apresentação no Gemini Canvas:** [https://share.gemini.google/x6xbDsLcnR6z](https://share.gemini.google/x6xbDsLcnR6z)  
 > **Padrão de Design & Linguagem:** Inspirado em Design Systems Fintech de Alta Confiabilidade (*Revolut / Stripe UI Principles*)
@@ -13,9 +13,11 @@
 
 Este repositório contém a modelagem completa, passo a passo, do Prompt de Sistema para um **Agente de Atendimento ao Cliente de Instituição Financeira / Banco Digital (Banco Horizon)**.
 
-O projeto foi construído seguindo rigorosamente as diretrizes e modelos estabelecidos nas imagens de referência arquivadas em [`docs/`](file:///c:/Users/zefpe/Documents/agente-ia-atendimento-ao-cliente/docs), integrando:
+O projeto foi construído seguindo rigorosamente as diretrizes e modelos estabelecidos nas imagens de referência arquivadas em [`docs/`](docs/).
+
+A arquitetura do projeto cobre:
 1. **Regras de Negócio e CX Financeiro:** Foco em resolução no primeiro contato (FCR) e objetividade em canais mobile.
-2. **Compliance e Segurança Bancária:** Respeito integral à LGPD, diretrizes do Banco Central do Brasil (Bacen) para canais de atendimento, sigilo bancário e tolerância zero a alucinação de dados críticos.
+2. **Compliance e Segurança Bancária:** Respeito integral à LGPD, diretrizes do Banco Central do Brasil (Bacen) para canais de atendimento, sigilo bancário e tolerância zero a alucinação de dados.
 3. **Protocolo de Transbordo Humano Inteligente:** Regras de saída (off-ramp) para fraudes e contestações sem atrito de repetição de informações.
 
 ---
@@ -24,12 +26,19 @@ O projeto foi construído seguindo rigorosamente as diretrizes e modelos estabel
 
 | Etapa | Arquivo Detalhado | Conteúdo Central |
 | :--- | :--- | :--- |
-| **Passo 1** | [passo-1-definicao-agente.md](file:///c:/Users/zefpe/Documents/agente-ia-atendimento-ao-cliente/docs/passo-1-definicao-agente.md) | Papel do Agente, público-alvo (cliente em mobilidade com pressa), pedidos comuns do escopo bancário e objetivo de atendimento. |
-| **Passo 2** | [passo-2-regras-e-conduta.md](file:///c:/Users/zefpe/Documents/agente-ia-atendimento-ao-cliente/docs/passo-2-regras-e-conduta.md) | Tom e formato (até 5 linhas, listas numeradas), políticas rígidas de não solicitação de dados sensíveis, proibição de alucinação e gatilhos de transbordo humano. |
-| **Passo 3** | [passo-3-prompt-final-e-testes.md](file:///c:/Users/zefpe/Documents/agente-ia-atendimento-ao-cliente/docs/passo-3-prompt-final-e-testes.md) | Prompt unificado, execução de 3 testes práticos em casos difíceis, respostas às perguntas avaliativas e refinamento. |
-| **Diagnóstico** | [analise-melhorias-slides.md](file:///c:/Users/zefpe/Documents/agente-ia-atendimento-ao-cliente/docs/analise-melhorias-slides.md) | Análise crítica do deck compartilhado no Gemini Canvas, diagnóstico slide a slide e plano de evolução de CX. |
-| **Apresentação** | [slides/index.html](file:///c:/Users/zefpe/Documents/agente-ia-atendimento-ao-cliente/slides/index.html) | Apresentação executiva e técnica interativa em HTML5/CSS/JS (16:9, Chart.js, atalhos de teclado e tema fintech). |
-| **Prompt Pronto** | [PROMPT_SISTEMA.md](file:///c:/Users/zefpe/Documents/agente-ia-atendimento-ao-cliente/PROMPT_SISTEMA.md) | Prompt pronto para implantação e homologação em LLMs (GPT-4, Claude, Gemini, etc.). |
+| **Passo 1** | [passo-1-definicao-agente.md](docs/passo-1-definicao-agente.md) | Papel do Agente, público-alvo (cliente em mobilidade) e escopo restrito de atendimento. |
+| **Passo 2** | [passo-2-regras-e-conduta.md](docs/passo-2-regras-e-conduta.md) | Tom e formato (até 5 linhas, listas numeradas), políticas de segurança e compliance. |
+| **Passo 3** | [passo-3-prompt-final-e-testes.md](docs/passo-3-prompt-final-e-testes.md) | Prompt unificado, execução de 3 testes difíceis e homologação do comportamento. |
+| **Diagnóstico** | [analise-melhorias-slides.md](docs/analise-melhorias-slides.md) | Análise crítica do deck compartilhado no Gemini Canvas e plano de melhorias. |
+| **Apresentação** | [slides/index.html](slides/index.html) | Apresentação executiva e técnica interativa em HTML5/CSS/JS (16:9, 9 slides). |
+| **Prompt Pronto** | [PROMPT_SISTEMA.md](PROMPT_SISTEMA.md) | Prompt pronto para implantação e homologação em LLMs (GPT-4, Claude, Gemini). |
+
+## 📚 Arquivos Markdown da Pasta `docs`
+
+- [passo-1-definicao-agente.md](docs/passo-1-definicao-agente.md) — definição do papel, público-alvo e escopo do agente.
+- [passo-2-regras-e-conduta.md](docs/passo-2-regras-e-conduta.md) — regras de conduta, tom de voz, segurança e transbordo.
+- [passo-3-prompt-final-e-testes.md](docs/passo-3-prompt-final-e-testes.md) — prompt final consolidado e testes em casos difíceis.
+- [analise-melhorias-slides.md](docs/analise-melhorias-slides.md) — análise e melhorias da apresentação.
 
 ---
 
@@ -38,7 +47,7 @@ O projeto foi construído seguindo rigorosamente as diretrizes e modelos estabel
 ```text
 Você é um Agente de atendimento ao cliente do Banco Horizon, atuando no chat do aplicativo mobile seguro.
 
-Quem fala com você: pessoa física titular de conta ou cartão, acessando pelo celular, frequentemente com pressa ou dúvida urgente sobre movimentações financeiras, que já explorou o app e busca uma solução rápida sem burocracia.
+Quem fala com você: pessoa física titular de conta ou cartão, acessando pelo celular, frequentemente com pressa ou dúvida urgente sobre movimentações financeiras, que já explorou o app e busca resolução rápida.
 
 Os pedidos que você resolve são:
 - Orientar como consultar o valor da fatura, data de vencimento e como emitir o código Pix ou código de barras para pagamento;
@@ -74,7 +83,7 @@ Conforme estipulado no Passo 3 das referências:
 1. **Caso Comum (Desbloqueio de Cartão):**  
    Fornece os 3 passos exatos pelo menu nativo do app, com encerramento em linha única, sem pedir senhas no chat.
 2. **Caso Sem Acesso ao Dado (Consulta de Fatura em Tempo Real):**  
-   Admite com transparência a falta de acesso a valores confidenciais no chat de IA e direciona o cliente para o menu `Cartões > Fatura Atual`, eliminando risco de alucinação de valores ou códigos de barra.
+   Admite com transparência a falta de acesso a valores confidenciais no chat de IA e direciona o cliente para o menu `Cartões > Fatura Atual`, eliminando risco de alucinação de valores ou códigos.
 3. **Caso de Transbordo Humano (Cobrança Desconhecida / Suspeita de Fraude):**  
    Aciona imediatamente a transferência para a equipe de Segurança e Fraudes com resumo contextual prévio e orienta ação preventiva de bloqueio pelo app.
 
@@ -83,13 +92,13 @@ Conforme estipulado no Passo 3 das referências:
 ## 🖥️ Apresentação Interativa de Slides
 
 A apresentação executiva e técnica está disponível tanto localmente quanto na nuvem:
-- **Versão Interativa Offline (HTML5/Chart.js):** [`slides/index.html`](file:///c:/Users/zefpe/Documents/agente-ia-atendimento-ao-cliente/slides/index.html)
+- **Versão Interativa Offline (HTML5/Chart.js):** [`slides/index.html`](slides/index.html)
   - **Navegação por Teclado:** Setas `[←]` e `[→]`, barra de espaço, ou `[Home]` / `[End]`.
   - **Modo Tela Cheia:** Pressione `[F]` ou use o botão na barra inferior.
   - **Gráficos Interativos:** Visualização radar com Chart.js de conformidade e métricas de homologação.
   - **Visualização Rápida:** Basta abrir o arquivo `slides/index.html` em qualquer navegador (Chrome, Edge, Firefox, Safari).
 - **Versão Online no Google Gemini Canvas:** [https://share.gemini.google/x6xbDsLcnR6z](https://share.gemini.google/x6xbDsLcnR6z)
-- **Diagnóstico e Melhorias da Apresentação:** [`docs/analise-melhorias-slides.md`](file:///c:/Users/zefpe/Documents/agente-ia-atendimento-ao-cliente/docs/analise-melhorias-slides.md)
+- **Diagnóstico e Melhorias da Apresentação:** [`docs/analise-melhorias-slides.md`](docs/analise-melhorias-slides.md)
 
 ---
 
@@ -116,4 +125,4 @@ Todas as alterações foram estruturadas em commits atômicos locais (sem `git p
 
 ---
 
-<p align="center"><strong>@2026 - Pedro Zeferino da Silva  com Dio.</strong></p>
+<p align="center"><strong>@2026 - Pedro Zeferino da Silva com Dio.</strong></p>
