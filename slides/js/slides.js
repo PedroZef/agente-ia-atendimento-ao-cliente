@@ -49,6 +49,42 @@ const slides = document.querySelectorAll('.slide');
             }
         });
 
+        // Alternador Dark Mode / Light Mode
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        if (themeToggleBtn) {
+            const themeIcon = themeToggleBtn.querySelector('.theme-icon');
+            const themeText = themeToggleBtn.querySelector('.theme-text');
+
+            function applyTheme(isLight) {
+                if (isLight) {
+                    document.body.classList.add('light-mode');
+                    if (themeIcon) themeIcon.textContent = '☀️';
+                    if (themeText) themeText.textContent = 'Light Mode';
+                    themeToggleBtn.setAttribute('title', 'Alternar para Dark Mode');
+                } else {
+                    document.body.classList.remove('light-mode');
+                    if (themeIcon) themeIcon.textContent = '🌙';
+                    if (themeText) themeText.textContent = 'Dark Mode';
+                    themeToggleBtn.setAttribute('title', 'Alternar para Light Mode');
+                }
+            }
+
+            // Recuperar preferência prévia salva
+            const savedTheme = localStorage.getItem('horizon_theme');
+            if (savedTheme === 'light') {
+                applyTheme(true);
+            } else {
+                applyTheme(false);
+            }
+
+            themeToggleBtn.addEventListener('click', () => {
+                const isCurrentlyLight = document.body.classList.contains('light-mode');
+                const nextLight = !isCurrentlyLight;
+                applyTheme(nextLight);
+                localStorage.setItem('horizon_theme', nextLight ? 'light' : 'dark');
+            });
+        }
+
         // Inicializar Gráfico Chart.js quando renderizado
         window.addEventListener('DOMContentLoaded', () => {
             const ctx = document.getElementById('homologationChart');

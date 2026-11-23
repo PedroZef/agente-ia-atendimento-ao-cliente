@@ -765,3 +765,162 @@
             transform: translateY(-2px);
             box-shadow: 0 12px 25px rgba(79, 85, 241, 0.6);
         }
+
+        /* Grupo de Status e Botão Dark Mode */
+        .header-status-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .theme-toggle-btn {
+            background: var(--bg-surface-elevated);
+            color: var(--text-primary);
+            border: 1px solid var(--border-subtle);
+            padding: 6px 14px;
+            border-radius: var(--radius-full);
+            font-family: var(--font-main);
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+            user-select: none;
+        }
+
+        .theme-toggle-btn:hover {
+            border-color: var(--brand-primary);
+            background: var(--bg-card);
+            transform: translateY(-1px);
+        }
+
+        .theme-toggle-btn .theme-icon {
+            font-size: 13px;
+        }
+
+        /* ===== LIGHT MODE FINTECH THEME ===== */
+        body.light-mode {
+            --bg-canvas: #eef2f7;
+            --bg-surface: #ffffff;
+            --bg-surface-elevated: #f1f5f9;
+            --bg-card: rgba(255, 255, 255, 0.95);
+            --border-subtle: rgba(0, 0, 0, 0.08);
+            --border-highlight: rgba(79, 85, 241, 0.4);
+            
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #64748b;
+            color: var(--text-primary);
+            background-color: var(--bg-canvas);
+        }
+
+        body.light-mode .slide-deck {
+            background: radial-gradient(circle at 50% 0%, #ffffff 0%, #e2e8f0 90%);
+            border-color: rgba(0, 0, 0, 0.08);
+            box-shadow: 0 20px 60px rgba(15, 23, 42, 0.12);
+        }
+
+        body.light-mode .cover-title {
+            background: linear-gradient(135deg, #3730a3 0%, #0284c7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        body.light-mode .slide-title,
+        body.light-mode .pillar-title,
+        body.light-mode .rule-body h4,
+        body.light-mode .safeguard-title,
+        body.light-mode .flow-title,
+        body.light-mode .horizon-title,
+        body.light-mode .closing-card h4,
+        body.light-mode .closing-action-card h3,
+        body.light-mode .chart-title {
+            color: #0f172a;
+        }
+
+        body.light-mode .kpi-badge {
+            background: rgba(0, 0, 0, 0.04);
+            border-color: rgba(0, 0, 0, 0.1);
+            color: #475569;
+        }
+
+        body.light-mode .pillar-card,
+        body.light-mode .rule-card,
+        body.light-mode .safeguard-card,
+        body.light-mode .flow-node,
+        body.light-mode .chart-box,
+        body.light-mode .horizon-card,
+        body.light-mode .closing-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-color: rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+        }
+
+        body.light-mode .mockup-card {
+            background: #ffffff;
+            border-color: rgba(0, 0, 0, 0.1);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+        }
+
+        body.light-mode .mockup-header strong {
+            color: #0f172a !important;
+        }
+
+        body.light-mode .chat-bubble {
+            background: #f8fafc;
+            color: #1e293b;
+            border-left-color: var(--brand-primary);
+        }
+
+        body.light-mode .controls {
+            background: rgba(255, 255, 255, 0.94);
+            border-color: rgba(0, 0, 0, 0.12);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        body.light-mode .nav-btn {
+            background: #f1f5f9;
+            color: #0f172a;
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        body.light-mode .slide-counter {
+            color: #475569;
+        }
+
+        body.light-mode .test-table tr.row-card td {
+            background: #ffffff;
+            border-color: rgba(0, 0, 0, 0.08);
+            color: #334155;
+        }
+
+        body.light-mode .test-table tr.row-card td:first-child {
+            color: #0f172a;
+            border-left-color: rgba(0, 0, 0, 0.08);
+        }
+
+        body.light-mode .test-table tr.row-card td:last-child {
+            border-right-color: rgba(0, 0, 0, 0.08);
+        }
+
+        body.light-mode .trigger-item {
+            background: rgba(239, 68, 68, 0.06);
+            border-color: rgba(239, 68, 68, 0.2);
+            color: #475569;
+        }
+
+        body.light-mode .closing-action-card {
+            background: linear-gradient(145deg, #ffffff 0%, #f1f5f9 100%);
+            border-color: var(--border-highlight);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+        }
+
+        body.light-mode .theme-toggle-btn {
+            background: #ffffff;
+            border-color: rgba(0, 0, 0, 0.12);
+            color: #0f172a;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+        }
