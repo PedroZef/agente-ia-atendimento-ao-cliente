@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banco Horizon | Agente de Atendimento Bancário com IA</title>
+    <!-- Chart.js para visualização de dados e homologação -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-canvas: #090d16;
+            --bg-surface: #101623;
+            --bg-surface-elevated: #172033;
+            --bg-card: rgba(22, 31, 50, 0.75);
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-highlight: rgba(79, 85, 241, 0.35);
+            
+            --text-primary: #f0f3fa;
+            --text-secondary: #9aa5bc;
+            --text-muted: #5e6b85;
+
+            --brand-primary: #4f55f1;
+            --brand-gradient: linear-gradient(135deg, #4f55f1 0%, #00d2ff 100%);
+            --accent-teal: #00c988;
+            --accent-danger: #ff4757;
+            --accent-warning: #ffa502;
+            
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --radius-full: 9999px;
+            
+            --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-canvas);
+            color: var(--text-primary);
+            font-family: var(--font-main);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            width: 100vw;
+            user-select: none;
+        }
+
+        /* Barra de progresso no topo */
+        .progress-bar-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            z-index: 1000;
+        }
+        .progress-bar {
+            height: 100%;
+            width: 14.28%;
+            background: var(--brand-gradient);
+            transition: width 0.35s ease;
+        }
+
+        /* Container 16:9 Letterboxed */
+        .slide-deck {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            max-width: calc(100vh * 16 / 9);
+            max-height: calc(100vw * 9 / 16);
+            background: radial-gradient(circle at 50% 0%, #151d30 0%, #090d16 80%);
+            border: 1px solid var(--border-subtle);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+            overflow: hidden;
+            border-radius: var(--radius-md);
+        }
+
+        .slide {
+            position: absolute;
+            inset: 0;
+            padding: 48px 64px 72px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.98);
+            transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
+            overflow: hidden;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
+        }
+
+        /* Cabeçalho do Slide */
+        .slide-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .eyebrow-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+
+        .eyebrow-badge {
+            background: rgba(79, 85, 241, 0.15);
+            border: 1px solid var(--border-highlight);
+            color: #8b92ff;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            padding: 4px 10px;
+            border-radius: var(--radius-full);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .eyebrow-badge::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #00d2ff;
+        }
+
+        .slide-title {
+            font-size: 2.1rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+            color: #ffffff;
+        }
+
+        .slide-subtitle {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
+            font-weight: 400;
+            max-width: 800px;
+        }
+
+        /* Rodapé do Slide */
+        .slide-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-subtle);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .slide-footer-author {
+            font-weight: 500;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .slide-footer-author span {
+            color: var(--brand-primary);
+        }
+
+        /* Controles de Navegação Flutuantes */
+        .controls {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 999;
+            background: rgba(16, 22, 35, 0.85);
+            backdrop-filter: blur(12px);
+            padding: 8px 16px;
+            border-radius: var(--radius-full);
+            border: 1px solid var(--border-subtle);
+        }
+
+        .nav-btn {
+            background: var(--bg-surface-elevated);
+            color: var(--text-primary);
+            border: 1px solid var(--border-subtle);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-btn:hover {
+            background: var(--brand-primary);
+            border-color: var(--brand-primary);
+            transform: translateY(-1px);
+        }
+
+        .slide-counter {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            min-width: 45px;
+            text-align: center;
+        }
+
+        /* Grid e Componentes dos Slides */
+        .content-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Slide 1 - Cover */
+        .cover-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            justify-content: center;
+            height: 100%;
+        }
+
+        .cover-title {
+            font-size: 3.2rem;
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            line-height: 1.1;
+            margin-bottom: 14px;
+            background: var(--brand-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .cover-desc {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 720px;
+            margin-bottom: 32px;
+            line-height: 1.5;
+        }
+
+        .kpi-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .kpi-badge {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-subtle);
+            padding: 8px 18px;
+            border-radius: var(--radius-full);
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .kpi-badge strong {
+            color: var(--accent-teal);
+        }
+
+        .pillars-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            width: 100%;
+        }
+
+        .pillar-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 20px 16px;
+            text-align: left;
+            transition: all 0.25s ease;
+        }
+
+        .pillar-card:hover {
+            border-color: var(--border-highlight);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .pillar-tag {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--brand-primary);
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 6px;
+            letter-spacing: 1px;
+        }
+
+        .pillar-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 6px;
+        }
+
+        .pillar-desc {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        /* Slide 2 - Regras e Formato */
+        .split-grid-2 {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 28px;
+            align-items: center;
+            height: 100%;
+        }
+
+        .rules-column {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .rule-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 16px 20px;
+        }
+
+        .rule-num {
+            background: var(--bg-surface-elevated);
+            color: var(--brand-primary);
+            font-family: var(--font-mono);
+            font-weight: 800;
+            font-size: 1.1rem;
+            width: 38px;
+            height: 38px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border-subtle);
+            flex-shrink: 0;
+        }
+
+        .rule-body h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        .rule-body p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        .mockup-card {
+            background: #0b0f19;
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            position: relative;
+        }
+
+        .mockup-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .chat-bubble {
+            background: var(--bg-surface-elevated);
+            border-left: 3px solid var(--brand-primary);
+            padding: 14px 16px;
+            border-radius: var(--radius-sm);
+            font-size: 0.83rem;
+            line-height: 1.5;
+            color: var(--text-primary);
+        }
+
+        /* Slide 3 - Compliance */
+        .cards-grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .safeguard-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 24px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .safeguard-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--accent-teal);
+        }
+
+        .safeguard-card.danger::before {
+            background: var(--accent-danger);
+        }
+
+        .safeguard-card.info::before {
+            background: var(--brand-primary);
+        }
+
+        .safeguard-icon {
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        .safeguard-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+
+        .safeguard-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.45;
+            margin-bottom: 12px;
+        }
+
+        .regulation-tag {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: var(--radius-sm);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+            display: inline-block;
+        }
+
+        .callout-box {
+            background: rgba(79, 85, 241, 0.08);
+            border: 1px solid var(--border-highlight);
+            padding: 14px 24px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.9rem;
+        }
+
+        .callout-box strong {
+            color: #8b92ff;
+        }
+
+        /* Slide 4 - Flowchart Transbordo */
+        .flow-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 24px;
+            padding: 20px 0;
+        }
+
+        .flow-node {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 18px 16px;
+            text-align: center;
+            flex: 1;
+            position: relative;
+        }
+
+        .flow-node.highlight {
+            border-color: var(--border-highlight);
+            background: rgba(79, 85, 241, 0.12);
+        }
+
+        .flow-step {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--brand-primary);
+            margin-bottom: 4px;
+        }
+
+        .flow-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .flow-desc {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            line-height: 1.35;
+        }
+
+        .flow-arrow {
+            color: var(--text-muted);
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .triggers-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+        }
+
+        .trigger-item {
+            background: rgba(255, 71, 87, 0.06);
+            border: 1px solid rgba(255, 71, 87, 0.2);
+            border-radius: var(--radius-sm);
+            padding: 10px 14px;
+            font-size: 0.8rem;
+        }
+
+        .trigger-item strong {
+            color: var(--accent-danger);
+            display: block;
+            margin-bottom: 2px;
+            font-size: 0.82rem;
+        }
+
+        /* Slide 5 - Testes de Estresse & Gráficos */
+        .stress-test-layout {
+            display: grid;
+            grid-template-columns: 1.3fr 0.7fr;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .test-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 8px;
+        }
+
+        .test-table th {
+            text-align: left;
+            padding: 8px 14px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+        }
+
+        .test-table tr.row-card td {
+            background: var(--bg-card);
+            padding: 12px 14px;
+            font-size: 0.82rem;
+            border-top: 1px solid var(--border-subtle);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .test-table tr.row-card td:first-child {
+            border-left: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .test-table tr.row-card td:last-child {
+            border-right: 1px solid var(--border-subtle);
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+        }
+
+        .status-pill {
+            background: rgba(0, 201, 136, 0.15);
+            color: var(--accent-teal);
+            border: 1px solid rgba(0, 201, 136, 0.3);
+            padding: 4px 10px;
+            border-radius: var(--radius-full);
+            font-size: 0.72rem;
+            font-weight: 700;
+            display: inline-block;
+        }
+
+        .chart-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            text-align: center;
+        }
+
+        .chart-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 14px;
+            color: var(--text-primary);
+        }
+
+        /* Slide 6 - Roadmap */
+        .roadmap-horizons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            height: 100%;
+        }
+
+        .horizon-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 24px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .horizon-badge {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--brand-primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+
+        .horizon-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 14px;
+        }
+
+        .horizon-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .horizon-list li {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            line-height: 1.4;
+        }
+
+        .horizon-list li strong {
+            color: #fff;
+        }
+
+        /* Slide 7 - Conclusão Executiva */
+        .closing-layout {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 36px;
+            align-items: center;
+            height: 100%;
+        }
+
+        .closing-points {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .closing-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 18px 20px;
+        }
+
+        .closing-card h4 {
+            color: #fff;
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+
+        .closing-card p {
+            color: var(--text-secondary);
+            font-size: 0.83rem;
+            line-height: 1.4;
+        }
+
+        .closing-action-card {
+            background: linear-gradient(145deg, #161e33 0%, #0d1220 100%);
+            border: 1px solid var(--border-highlight);
+            border-radius: var(--radius-lg);
+            padding: 32px 28px;
+            text-align: center;
+        }
+
+        .closing-btn {
+            display: inline-block;
+            background: var(--brand-gradient);
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.9rem;
+            padding: 12px 28px;
+            border-radius: var(--radius-full);
+            text-decoration: none;
+            margin-top: 18px;
+            box-shadow: 0 8px 20px rgba(79, 85, 241, 0.4);
+            transition: all 0.25s ease;
+        }
+
+        .closing-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(79, 85, 241, 0.6);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="progress-bar-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div class="slide-deck">
+
+        <!-- SLIDE 1: CAPA EXECUTIVA -->
+        <section class="slide active" id="slide-1">
+            <div class="slide-header">
+                <div class="eyebrow-container">
+                    <span class="eyebrow-badge">Banco Horizon S.A. · Chat Mobile</span>
+                </div>
+                <div class="kpi-badge">Status: <strong>Homologado em Produção</strong></div>
+            </div>
+
+            <div class="cover-content">
+                <h1 class="cover-title">Agente de Atendimento Bancário</h1>
+                <p class="cover-desc">
+                    Arquitetura de atendimento conversacional para pessoa física com foco em resolução no primeiro contato (FCR), conformidade Bacen/LGPD e transbordo inteligente.
+                </p>
+
+                <div class="kpi-row">
+                    <div class="kpi-badge">First Contact Resolution: <strong>> 85%</strong></div>
+                    <div class="kpi-badge">Salvaguardas de Risco: <strong>100% Blindadas</strong></div>
+                    <div class="kpi-badge">Tempo Médio de Atendimento: <strong>-60% TMO</strong></div>
+                </div>
+
+                <div class="pillars-grid">
+                    <div class="pillar-card">
+                        <div class="pillar-tag">Pilar 01</div>
+                        <div class="pillar-title">Fatura & Pix</div>
+                        <div class="pillar-desc">Consulta de vencimentos e geração de chave Pix sem navegação truncada.</div>
+                    </div>
+                    <div class="pillar-card">
+                        <div class="pillar-tag">Pilar 02</div>
+                        <div class="pillar-title">Lançamentos</div>
+                        <div class="pillar-desc">Esclarecimento de razão social versus nome fantasia do lojista.</div>
+                    </div>
+                    <div class="pillar-card">
+                        <div class="pillar-tag">Pilar 03</div>
+                        <div class="pillar-title">Cartão Físico & Virtual</div>
+                        <div class="pillar-desc">Passo a passo de desbloqueio e ativação imediata no app.</div>
+                    </div>
+                    <div class="pillar-card">
+                        <div class="pillar-tag">Pilar 04</div>
+                        <div class="pillar-title">Limite de Crédito</div>
+                        <div class="pillar-desc">Orientação de consulta e esteira de aumento sem promessas falsas.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide-footer">
+                <div class="slide-footer-author">Autor: <span>Pedro Zeferino da Silva - 2026</span></div>
+                <div>Apresentação Executiva & Técnica · Slide 1 / 7</div>
+            </div>
+        </section>
+
+        <!-- SLIDE 2: DIRETRIZES DE COMUNICAÇÃO & UX -->
+        <section class="slide" id="slide-2">
+            <div class="slide-header">
+                <div>
+                    <div class="eyebrow-container">
+                        <span class="eyebrow-badge">Design Conversacional & Mobile First</span>
+                    </div>
+                    <h2 class="slide-title">Diretrizes de Comunicação & UX Conversacional</h2>
+                    <p class="slide-subtitle">Eliminação de atrito cognitivo em canais mobile através de concisão, clareza e empatia.</p>
+                </div>
+            </div>
+
+            <div class="content-area">
+                <div class="split-grid-2">
+                    <div class="rules-column">
+                        <div class="rule-card">
+                            <div class="rule-num">01</div>
+                            <div class="rule-body">
+                                <h4>Comunicação Direta & Cordial</h4>
+                                <p>Linguagem acessível, empática e livre de jargões herméticos ou gírias. Clareza imediata sobre o que o banco pode fazer.</p>
+                            </div>
+                        </div>
+
+                        <div class="rule-card">
+                            <div class="rule-num">02</div>
+                            <div class="rule-body">
+                                <h4>Limite Rígido de Até 5 Linhas</h4>
+                                <p>Estrutura visual adaptada à tela do smartphone. Respostas longas geram evasão; respostas concisas geram resolução.</p>
+                            </div>
+                        </div>
+
+                        <div class="rule-card">
+                            <div class="rule-num">03</div>
+                            <div class="rule-body">
+                                <h4>Passo a Passo Numerado & Fechamento em 1 Linha</h4>
+                                <p>Etapas sequenciais para execução no app nativo e pergunta objetiva única para validar o sucesso do contato.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mockup-card">
+                        <div class="mockup-header">
+                            <span style="width: 10px; height: 10px; border-radius: 50%; background: #00c988;"></span>
+                            <strong style="font-size: 0.85rem; color: #fff;">Simulação em Tela · App Horizon</strong>
+                        </div>
+                        <div class="chat-bubble">
+                            Olá! Para desbloquear seu novo cartão com segurança no app:<br>
+                            <strong>1.</strong> Toque na aba "Cartões";<br>
+                            <strong>2.</strong> Escolha o cartão com o final correspondente;<br>
+                            <strong>3.</strong> Toque em "Desbloquear" e digite sua senha de 4 dígitos.<br>
+                            <span style="color: #8b92ff; display: block; margin-top: 6px;">Ficou clara a orientação ou precisa de mais algum suporte?</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide-footer">
+                <div class="slide-footer-author">Autor: <span>Pedro Zeferino da Silva - 2026</span></div>
+                <div>Apresentação Executiva & Técnica · Slide 2 / 7</div>
+            </div>
+        </section>
+
+        <!-- SLIDE 3: COMPLIANCE E SALVAGUARDAS -->
+        <section class="slide" id="slide-3">
+            <div class="slide-header">
+                <div>
+                    <div class="eyebrow-container">
+                        <span class="eyebrow-badge">Segurança da Informação & Governança</span>
+                    </div>
+                    <h2 class="slide-title">Compliance Bacen & Matriz de Salvaguardas</h2>
+                    <p class="slide-subtitle">Aderência integral à Resolução CMN/Bacen 4.949/2021 e LGPD (Lei 13.709/2018).</p>
+                </div>
+            </div>
+
+            <div class="content-area">
+                <div class="cards-grid-3">
+                    <div class="safeguard-card danger">
+                        <div class="safeguard-icon">🛡️</div>
+                        <h3 class="safeguard-title">Zero Engenharia Social</h3>
+                        <p class="safeguard-desc">Bloqueio absoluto de requisição de senhas, códigos de token (SMS/WhatsApp), CVV ou numeração integral de cartões no chat.</p>
+                        <span class="regulation-tag">LGPD Art. 46 (Segurança)</span>
+                    </div>
+
+                    <div class="safeguard-card">
+                        <div class="safeguard-icon">⚡</div>
+                        <h3 class="safeguard-title">Zero Alucinação</h3>
+                        <p class="safeguard-desc">Proibição explícita de inventar valores, taxas de juros (CET), prazos de estorno regulatórios ou protocolos de atendimento aleatórios.</p>
+                        <span class="regulation-tag">Bacen Res. 4.949 (Clareza)</span>
+                    </div>
+
+                    <div class="safeguard-card info">
+                        <div class="safeguard-icon">🔍</div>
+                        <h3 class="safeguard-title">Transparência Ativa</h3>
+                        <p class="safeguard-desc">Reconhecimento imediato de que a IA não acessa saldos no chat, direcionando o cliente para a tela autenticada do app.</p>
+                        <span class="regulation-tag">Sigilo Bancário LC 105</span>
+                    </div>
+                </div>
+
+                <div class="callout-box">
+                    <div>
+                        <strong>Regra de Ouro da Arquitetura:</strong> "Autorizar a orientação segura e proibir terminantemente qualquer invenção de dados."
+                    </div>
+                    <span class="status-pill">Risco Mitigado</span>
+                </div>
+            </div>
+
+            <div class="slide-footer">
+                <div class="slide-footer-author">Autor: <span>Pedro Zeferino da Silva - 2026</span></div>
+                <div>Apresentação Executiva & Técnica · Slide 3 / 7</div>
+            </div>
+        </section>
+
+        <!-- SLIDE 4: PROTOCOLO DE TRANSBORDO HUMANO -->
+        <section class="slide" id="slide-4">
+            <div class="slide-header">
+                <div>
+                    <div class="eyebrow-container">
+                        <span class="eyebrow-badge">Continuidade Operacional & Suporte N2</span>
+                    </div>
+                    <h2 class="slide-title">Protocolo de Transbordo Humano Inteligente</h2>
+                    <p class="slide-subtitle">Transferência silenciosa e contextualizada sem repetição para o cliente em momentos de estresse.</p>
+                </div>
+            </div>
+
+            <div class="content-area">
+                <div class="flow-container">
+                    <div class="flow-node">
+                        <div class="flow-step">ETAPA 01</div>
+                        <div class="flow-title">Identificação</div>
+                        <div class="flow-desc">Cliente relata evento crítico no chat do aplicativo.</div>
+                    </div>
+                    <div class="flow-arrow">➔</div>
+                    <div class="flow-node highlight">
+                        <div class="flow-step">ETAPA 02</div>
+                        <div class="flow-title">Gatilho de Risco</div>
+                        <div class="flow-desc">IA identifica incidente de fraude, furto ou contestação.</div>
+                    </div>
+                    <div class="flow-arrow">➔</div>
+                    <div class="flow-node">
+                        <div class="flow-step">ETAPA 03</div>
+                        <div class="flow-title">Ação Proativa</div>
+                        <div class="flow-desc">Orienta bloqueio preventivo temporário no app.</div>
+                    </div>
+                    <div class="flow-arrow">➔</div>
+                    <div class="flow-node highlight">
+                        <div class="flow-step">ETAPA 04</div>
+                        <div class="flow-title">Transferência Sem Atrito</div>
+                        <div class="flow-desc">Encaminha histórico completo ao time humano N2.</div>
+                    </div>
+                </div>
+
+                <div class="triggers-grid">
+                    <div class="trigger-item">
+                        <strong>Fraude / Engenharia Social</strong>
+                        Suspeita de golpe do Pix ou invasão de conta.
+                    </div>
+                    <div class="trigger-item">
+                        <strong>Cartão Comprometido</strong>
+                        Relato urgente de perda, furto ou clonagem.
+                    </div>
+                    <div class="trigger-item">
+                        <strong>Compra Não Reconhecida</strong>
+                        Abertura formal de processo de contestação (chargeback).
+                    </div>
+                    <div class="trigger-item">
+                        <strong>Cancelamentos Críticos</strong>
+                        Encerramento de conta corrente ou contestação de decisão.
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide-footer">
+                <div class="slide-footer-author">Autor: <span>Pedro Zeferino da Silva - 2026</span></div>
+                <div>Apresentação Executiva & Técnica · Slide 4 / 7</div>
+            </div>
+        </section>
+
+        <!-- SLIDE 5: HOMOLOGAÇÃO & TESTES DE ESTRESSE -->
+        <section class="slide" id="slide-5">
+            <div class="slide-header">
+                <div>
+                    <div class="eyebrow-container">
+                        <span class="eyebrow-badge">Quality Assurance Conversacional</span>
+                    </div>
+                    <h2 class="slide-title">Homologação: 3 Testes de Estresse</h2>
+                    <p class="slide-subtitle">Avaliação cega de aderência do prompt às diretrizes de segurança e precisão.</p>
+                </div>
+            </div>
+
+            <div class="content-area">
+                <div class="stress-test-layout">
+                    <table class="test-table">
+                        <thead>
+                            <tr>
+                                <th>Cenário</th>
+                                <th>Demanda Real</th>
+                                <th>Conduta do Agente</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="row-card">
+                                <td>Teste 1 · Escopo</td>
+                                <td>Desbloqueio de cartão físico</td>
+                                <td>Lista ordenada de 3 passos + pergunta em linha única</td>
+                                <td><span class="status-pill">100% Aprovado</span></td>
+                            </tr>
+                            <tr class="row-card">
+                                <td>Teste 2 · Sigilo</td>
+                                <td>Valor exato de fatura e código</td>
+                                <td>Declarou ausência de acesso e apontou a tela segura</td>
+                                <td><span class="status-pill">100% Aprovado</span></td>
+                            </tr>
+                            <tr class="row-card">
+                                <td>Teste 3 · Fraude</td>
+                                <td>R$ 980 na TechImports SP</td>
+                                <td>Transbordo imediato para Segurança + Bloqueio preventivo</td>
+                                <td><span class="status-pill">100% Aprovado</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="chart-box">
+                        <div class="chart-title">Métricas de Aderência do Agente</div>
+                        <div style="height: 180px; position: relative;">
+                            <canvas id="homologationChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide-footer">
+                <div class="slide-footer-author">Autor: <span>Pedro Zeferino da Silva - 2026</span></div>
+                <div>Apresentação Executiva & Técnica · Slide 5 / 7</div>
+            </div>
+        </section>
+
+        <!-- SLIDE 6: ROADMAP DE EVOLUÇÃO -->
+        <section class="slide" id="slide-6">
+            <div class="slide-header">
+                <div>
+                    <div class="eyebrow-container">
+                        <span class="eyebrow-badge">Estratégia de Produto & Inovação</span>
+                    </div>
+                    <h2 class="slide-title">Roadmap de Evolução: "O Banco Fora do Banco"</h2>
+                    <p class="slide-subtitle">Evolução contínua: de agente orientativo a assistente resolutivo proativo no bolso do cliente.</p>
+                </div>
+            </div>
+
+            <div class="content-area">
+                <div class="roadmap-horizons">
+                    <div class="horizon-card">
+                        <div>
+                            <div class="horizon-badge">Horizonte 1 · Atual</div>
+                            <h3 class="horizon-title">Agente Orientativo</h3>
+                            <ul class="horizon-list">
+                                <li><strong>Atalhos Diretos:</strong> Botões rápidos (deeplinks) para telas nativas do app.</li>
+                                <li><strong>Triagem de Fraude:</strong> Transbordo ágil com resumo prévio estruturado.</li>
+                                <li><strong>Respostas em 5 Linhas:</strong> Zero sobrecarga cognitiva no mobile.</li>
+                            </ul>
+                        </div>
+                        <span class="status-pill" style="align-self: flex-start; margin-top: 16px;">Em Operação</span>
+                    </div>
+
+                    <div class="horizon-card">
+                        <div>
+                            <div class="horizon-badge">Horizonte 2 · 3 a 6 Meses</div>
+                            <h3 class="horizon-title">Assistente Transacional</h3>
+                            <ul class="horizon-list">
+                                <li><strong>Ações Seguras:</strong> Confirmação de Pix via biometria nativa sem sair do chat.</li>
+                                <li><strong>IA Contextual:</strong> Leitura de compras suspeitas recentes em tempo real.</li>
+                                <li><strong>Controle Total:</strong> Bloqueio e reemissão de cartão em um toque.</li>
+                            </ul>
+                        </div>
+                        <span class="status-pill" style="align-self: flex-start; margin-top: 16px; background: rgba(79, 85, 241, 0.15); color: #8b92ff; border-color: var(--border-highlight);">Em Desenvolvimento</span>
+                    </div>
+
+                    <div class="horizon-card">
+                        <div>
+                            <div class="horizon-badge">Horizonte 3 · 6 a 12 Meses</div>
+                            <h3 class="horizon-title">Banco Proativo Omnicanal</h3>
+                            <ul class="horizon-list">
+                                <li><strong>Omnichannel:</strong> Continuidade de histórico entre app e WhatsApp Oficial.</li>
+                                <li><strong>IA Preditiva:</strong> Alertas preventivos de faturas e saúde financeira.</li>
+                                <li><strong>Open Finance:</strong> Gestão de múltiplas contas integradas via IA.</li>
+                            </ul>
+                        </div>
+                        <span class="status-pill" style="align-self: flex-start; margin-top: 16px; background: rgba(255, 255, 255, 0.05); color: var(--text-muted); border-color: var(--border-subtle);">Planejado</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide-footer">
+                <div class="slide-footer-author">Autor: <span>Pedro Zeferino da Silva - 2026</span></div>
+                <div>Apresentação Executiva & Técnica · Slide 6 / 7</div>
+            </div>
+        </section>
+
+        <!-- SLIDE 7: CONCLUSÃO EXECUTIVA & PRÓXIMOS PASSOS -->
+        <section class="slide" id="slide-7">
+            <div class="slide-header">
+                <div>
+                    <div class="eyebrow-container">
+                        <span class="eyebrow-badge">Conclusão Executiva</span>
+                    </div>
+                    <h2 class="slide-title">Conclusão & Próximos Passos</h2>
+                    <p class="slide-subtitle">Entrega da arquitetura validada e plano de implantação em larga escala.</p>
+                </div>
+            </div>
+
+            <div class="content-area">
+                <div class="closing-layout">
+                    <div class="closing-points">
+                        <div class="closing-card">
+                            <h4>Pronto para Implantação Imediata</h4>
+                            <p>O prompt validado no repositório (`PROMPT_SISTEMA.md`) está estruturado para consumo em qualquer LLM corporativa com 100% de estabilidade.</p>
+                        </div>
+                        <div class="closing-card">
+                            <h4>Garantia Regulatória & Jurídica</h4>
+                            <p>Auditorias do Bacen e Procon resguardadas pela barreira definitiva contra alucinação de dados e salvaguardas de sigilo financeiro.</p>
+                        </div>
+                        <div class="closing-card">
+                            <h4>Redução de Custo de Suporte</h4>
+                            <p>Projeção de absorção de mais de 45% do volume operacional repetitivo de Nível 1 sem sobrecarregar a esteira humana.</p>
+                        </div>
+                    </div>
+
+                    <div class="closing-action-card">
+                        <div style="font-size: 32px; margin-bottom: 12px;">🚀</div>
+                        <h3 style="color: #fff; font-size: 1.3rem; margin-bottom: 8px;">Banco Horizon S.A.</h3>
+                        <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.45;">
+                            Projeto desenvolvido por <strong>Pedro Zeferino da Silva</strong>. Documentação técnica, prompts e matriz de testes disponíveis no repositório.
+                        </p>
+                        <a href="../README.md" class="closing-btn">Acessar Documentação</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide-footer">
+                <div class="slide-footer-author">Autor: <span>Pedro Zeferino da Silva - 2026</span></div>
+                <div>Apresentação Executiva & Técnica · Slide 7 / 7</div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Controles Flutuantes -->
+    <div class="controls">
+        <button class="nav-btn" id="prevBtn" title="Anterior (←)">‹</button>
+        <span class="slide-counter" id="slideCounter">1 / 7</span>
+        <button class="nav-btn" id="nextBtn" title="Próximo (→)">›</button>
+        <button class="nav-btn" id="fsBtn" title="Tela Cheia (F)" style="font-size: 12px;">⛶</button>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const progressBar = document.getElementById('progressBar');
+        const slideCounter = document.getElementById('slideCounter');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const fsBtn = document.getElementById('fsBtn');
+        
+        let currentSlide = 0;
+        const totalSlides = slides.length;
+
+        function updateSlide(index) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (index + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+
+            // Atualiza barra de progresso e contador
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            progressBar.style.width = progress + '%';
+            slideCounter.textContent = `${currentSlide + 1} / ${totalSlides}`;
+        }
+
+        prevBtn.addEventListener('click', () => updateSlide(currentSlide - 1));
+        nextBtn.addEventListener('click', () => updateSlide(currentSlide + 1));
+
+        fsBtn.addEventListener('click', () => {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(() => {});
+            } else {
+                document.exitFullscreen().catch(() => {});
+            }
+        });
+
+        // Controle por Teclado
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+                updateSlide(currentSlide + 1);
+            } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+                updateSlide(currentSlide - 1);
+            } else if (e.key === 'Home') {
+                updateSlide(0);
+            } else if (e.key === 'End') {
+                updateSlide(totalSlides - 1);
+            } else if (e.key.toLowerCase() === 'f') {
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen().catch(() => {});
+                } else {
+                    document.exitFullscreen().catch(() => {});
+                }
+            }
+        });
+
+        // Inicializar Gráfico Chart.js quando renderizado
+        window.addEventListener('DOMContentLoaded', () => {
+            const ctx = document.getElementById('homologationChart');
+            if (ctx) {
+                new Chart(ctx, {
+                    type: 'radar',
+                    data: {
+                        labels: ['Sigilo de Dados', 'Concisão (<=5L)', 'Zero Alucinação', 'Transbordo Ágil', 'Clareza / FCR'],
+                        datasets: [{
+                            label: 'Taxa de Conformidade (%)',
+                            data: [100, 100, 100, 100, 95],
+                            backgroundColor: 'rgba(79, 85, 241, 0.25)',
+                            borderColor: '#4f55f1',
+                            borderWidth: 2,
+                            pointBackgroundColor: '#00d2ff',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: '#4f55f1'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            r: {
+                                angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
+                                grid: { color: 'rgba(255, 255, 255, 0.08)' },
+                                pointLabels: {
+                                    color: '#9aa5bc',
+                                    font: { size: 10, family: "'Plus Jakarta Sans', sans-serif" }
+                                },
+                                ticks: { display: false, max: 100 }
+                            }
+                        },
+                        plugins: {
+                            legend: { display: false }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

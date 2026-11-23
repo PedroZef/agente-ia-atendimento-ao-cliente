@@ -25,6 +25,8 @@ O projeto foi construído seguindo rigorosamente as diretrizes e modelos estabel
 | **Passo 1** | [passo-1-definicao-agente.md](file:///c:/Users/zefpe/Documents/agente-ia-atendimento-ao-cliente/docs/passo-1-definicao-agente.md) | Papel do Agente, público-alvo (cliente em mobilidade com pressa), pedidos comuns do escopo bancário e objetivo de atendimento. |
 | **Passo 2** | [passo-2-regras-e-conduta.md](file:///c:/Users/zefpe/Documents/agente-ia-atendimento-ao-cliente/docs/passo-2-regras-e-conduta.md) | Tom e formato (até 5 linhas, listas numeradas), políticas rígidas de não solicitação de dados sensíveis, proibição de alucinação e gatilhos de transbordo humano. |
 | **Passo 3** | [passo-3-prompt-final-e-testes.md](file:///c:/Users/zefpe/Documents/agente-ia-atendimento-ao-cliente/docs/passo-3-prompt-final-e-testes.md) | Prompt unificado, execução de 3 testes práticos em casos difíceis, respostas às perguntas avaliativas e refinamento. |
+| **Diagnóstico** | [analise-melhorias-slides.md](file:///c:/Users/zefpe/Documents/agente-ia-atendimento-ao-cliente/docs/analise-melhorias-slides.md) | Análise crítica do deck compartilhado no Gemini Canvas, diagnóstico slide a slide e plano de evolução de CX. |
+| **Apresentação** | [slides/index.html](file:///c:/Users/zefpe/Documents/agente-ia-atendimento-ao-cliente/slides/index.html) | Apresentação executiva e técnica interativa em HTML5/CSS/JS (16:9, Chart.js, atalhos de teclado e tema fintech). |
 | **Prompt Pronto** | [PROMPT_SISTEMA.md](file:///c:/Users/zefpe/Documents/agente-ia-atendimento-ao-cliente/PROMPT_SISTEMA.md) | Prompt pronto para implantação e homologação em LLMs (GPT-4, Claude, Gemini, etc.). |
 
 ---
@@ -73,6 +75,16 @@ Conforme estipulado no Passo 3 das referências:
    Admite com transparência a falta de acesso a valores confidenciais no chat de IA e direciona o cliente para o menu `Cartões > Fatura Atual`, eliminando risco de alucinação de valores ou códigos de barra.
 3. **Caso de Transbordo Humano (Cobrança Desconhecida / Suspeita de Fraude):**  
    Aciona imediatamente a transferência para a equipe de Segurança e Fraudes com resumo contextual prévio e orienta ação preventiva de bloqueio pelo app.
+
+---
+
+## 🖥️ Apresentação Interativa de Slides
+
+A apresentação executiva e técnica está disponível no diretório [`slides/index.html`](file:///c:/Users/zefpe/Documents/agente-ia-atendimento-ao-cliente/slides/index.html):
+- **Navegação por Teclado:** Setas `[←]` e `[→]`, barra de espaço, ou `[Home]` / `[End]`.
+- **Modo Tela Cheia:** Pressione `[F]` ou use o botão na barra inferior.
+- **Gráficos Interativos:** Visualização radar com Chart.js de conformidade e métricas de homologação.
+- **Visualização Rápida:** Basta abrir o arquivo `slides/index.html` em qualquer navegador (Chrome, Edge, Firefox, Safari).
 
 ---
 
