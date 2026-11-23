@@ -109,3 +109,11 @@ Todas as alterações foram estruturadas em commits atômicos locais (sem `git p
 - `feat(prompt): implementar Passo 2 - Regras de conduta, tom de voz, compliance bancario e transbordo`
 - `feat(prompt): implementar Passo 3 - Unificacao do prompt do sistema, bateria de testes dificeis e homologacao`
 - `docs: consolidar README com guia executivo e arquitetura do agente bancario`
+- `feat(slides): criar apresentacao interativa em HTML5 e relatorio de melhorias do deck`
+- `docs: adicionar links do Gemini Canvas e repositorio GitHub no README`
+- `refactor(slides): modularizar CSS em style.css e JS em slides.js`
+- `docs: atualizar footer com assinatura Pedro Zeferino da Silva com Dio`
+
+---
+
+<p align="center"><strong>@2026 - Pedro Zeferino da Silva  com Dio.</strong></p>

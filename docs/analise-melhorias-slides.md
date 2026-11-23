@@ -2,7 +2,7 @@
 
 > **Origem Analisada:** Deck do Gemini Canvas (`https://share.gemini.google/x6xbDsLcnR6z`)  
 > **Tema:** Agente de Atendimento Bancário — Banco Horizon S.A.  
-> **Autor da Versão Original:** Pedro Zeferino da Silva (2026)  
+> **Autor da Versão Original:** Pedro Zeferino da Silva  com Dio. (2026)  
 > **Especialidade:** UX/UI Design, Storytelling Corporativo & CX Bancário
 
 ---
