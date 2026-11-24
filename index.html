@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Banco Horizon · Simulador Agente IA v2.0 + RAG</title>
+  <link rel="stylesheet" href="./css/style.css" />
+  <script src="./js/app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-logo">BH</div>
+      <div>
+        <h1>Banco Horizon · Simulador do Agente IA</h1>
+        <span>Arquitetura em 2 Camadas: PROMPT_SISTEMA.md (v2.0) + Base RAG</span>
+      </div>
+    </div>
+    <div class="header-actions">
+      <span class="badge">v2.0 · Bacen / LGPD</span>
+      <a class="btn-link" href="./apresentacao/slides.html" target="_blank" rel="noopener noreferrer">
+        Apresentação v2.0 ↗
+      </a>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="phone-frame" aria-label="Chat Mobile Banco Horizon">
+      <div class="phone-screen">
+        <div class="chat-header">
+          <div>
+            <div class="chat-header-title">Assistente Banco Horizon</div>
+            <div class="chat-header-sub">
+              <span class="status-dot"></span>Sessão autenticada · App Mobile
+            </div>
+          </div>
+          <button type="button" class="btn-reset" id="btnReset">Reiniciar</button>
+        </div>
+
+        <div class="chat-messages" id="chatMessages" aria-live="polite"></div>
+
+        <form class="chat-input-bar" id="chatForm">
+          <input
+            id="userInput"
+            type="text"
+            placeholder="Digite sua dúvida bancária..."
+            autocomplete="off"
+          />
+          <button type="submit">Enviar</button>
+        </form>
+      </div>
+    </section>
+
+    <section class="panel-stack">
+      <div class="card">
+        <div class="card-head">
+          <h2>Bateria de Homologação QA (6 Testes de Estresse)</h2>
+          <span class="card-hint">Clique para executar</span>
+        </div>
+        <div class="tests-grid">
+          <button type="button" class="test-btn" data-test="T1">
+            <strong>T1 · Desbloqueio de Cartão</strong>
+            <span>Formato modular + Mapa Oficial sem pedir dados sensíveis.</span>
+          </button>
+          <button type="button" class="test-btn" data-test="T2">
+            <strong>T2 · Fatura Sigilosa</strong>
+            <span>Sigilo bancário + transparência ativa da tela exata.</span>
+          </button>
+          <button type="button" class="test-btn" data-test="T3">
+            <strong>T3 · Nome Fantasia via RAG</strong>
+            <span>Identifica prefixo PAG* na base RAG e aplica triagem de 1 turno.</span>
+          </button>
+          <button type="button" class="test-btn" data-test="T4">
+            <strong>T4 · Fraude / Roubo</strong>
+            <span>Tom acolhedor + bloqueio preventivo + transbordo com resumo.</span>
+          </button>
+          <button type="button" class="test-btn" data-test="T5">
+            <strong>T5 · Fora do Escopo</strong>
+            <span>Declara escopo com cordialidade e oferece fila geral.</span>
+          </button>
+          <button type="button" class="test-btn" data-test="T6">
+            <strong>T6 · Prompt Injection</strong>
+            <span>Bloqueia tentativa de revelar regras internas ou burlar sigilo.</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <h2>Inspetor RAG & Guardrails em Tempo Real</h2>
+        </div>
+        <div class="inspector-grid">
+          <div class="metric">
+            <label>Camada Acionada</label>
+            <div class="val" id="mLayer">Aguardando mensagem</div>
+          </div>
+          <div class="metric">
+            <label>Tom Calibrado</label>
+            <div class="val" id="mTone">Ágil / Objetivo</div>
+          </div>
+          <div class="metric">
+            <label>Compliance Bacen/LGPD</label>
+            <div class="val val-ok" id="mCompliance">100% Conforme</div>
+          </div>
+          <div class="metric">
+            <label>Roteamento</label>
+            <div class="val" id="mRoute">Autoatendimento (FCR)</div>
+          </div>
+        </div>
+        <div class="rag-box" id="ragLog"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    Desenvolvido por <strong>Pedro Zeferino da Silva - 2026</strong> · Agente de Atendimento Bancário (Banco Horizon v2.0)
+  </footer>
+</body>
+</html>

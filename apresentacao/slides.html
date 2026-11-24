@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Apresentação v2.0 — Agente de Atendimento Bancário (Banco Horizon)</title>
+  <style>
+    :root {
+      --navy: #0B1F3A;
+      --navy-mid: #132C4E;
+      --navy-border: #214470;
+      --teal: #00A8B5;
+      --teal-dark: #007F8A;
+      --teal-soft: #E6F7F8;
+      --bg-light: #F6F8FC;
+      --white: #FFFFFF;
+      --border: #D8E1EC;
+      --text: #142136;
+      --muted: #4B5B70;
+      --ice: #D9E6F2;
+      --crimson: #C83E4D;
+      --crimson-soft: #FDECEE;
+      --amber: #D97706;
+      --amber-soft: #FEF3C7;
+      --green: #15803D;
+      --green-soft: #E8F8EE;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+    body {
+      background: #071426;
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+    }
+    .deck-controls {
+      width: 100%;
+      max-width: 1160px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      color: var(--ice);
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .ctrl-group { display: flex; align-items: center; gap: 8px; }
+    .btn {
+      background: var(--navy-mid);
+      border: 1px solid var(--navy-border);
+      color: var(--white);
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .btn:hover { border-color: var(--teal); color: var(--teal); }
+    .btn-primary { background: var(--teal); color: var(--navy); border-color: var(--teal); }
+    .btn-primary:hover { opacity: .9; color: var(--navy); }
+
+    .stage {
+      width: 100%;
+      max-width: 1160px;
+      aspect-ratio: 16 / 9;
+      min-height: 600px;
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.45);
+    }
+    .slide {
+      display: none;
+      width: 100%;
+      height: 100%;
+      padding: 36px 46px 60px;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow-y: auto;
+    }
+    .slide.active { display: flex; }
+    .slide.dark { background: var(--navy); color: var(--white); }
+    .slide.light { background: var(--bg-light); color: var(--text); }
+    .top-bar { position: absolute; top: 0; left: 0; right: 0; height: 6px; background: var(--navy); }
+    .top-bar::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 26%; background: var(--teal); }
+    .slide.dark .top-bar { background: var(--teal); }
+
+    .eyebrow { font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--teal-dark); margin-bottom: 6px; }
+    .slide.dark .eyebrow { color: var(--teal); }
+    h1 { font-size: 38px; line-height: 1.12; margin-bottom: 12px; }
+    h2 { font-size: 26px; line-height: 1.18; color: var(--navy); margin-bottom: 6px; }
+    .slide.dark h2 { color: var(--white); }
+    .subtitle { font-size: 14px; color: var(--muted); padding-bottom: 14px; border-bottom: 1px solid var(--border); margin-bottom: 18px; }
+    .slide.dark .subtitle { color: var(--ice); border-bottom-color: var(--navy-border); }
+
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+    .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+    @media (max-width: 900px) {
+      .stage { aspect-ratio: auto; min-height: 680px; }
+      .grid-4, .grid-3, .grid-2, .grid-5 { grid-template-columns: 1fr; }
+    }
+
+    .card-dark {
+      background: var(--navy-mid); border: 1px solid var(--navy-border);
+      border-top: 3px solid var(--teal); border-radius: 12px; padding: 16px;
+    }
+    .card-dark .num { font-size: 22px; font-weight: 800; color: var(--teal); margin-bottom: 6px; }
+    .card-dark h3 { font-size: 15px; margin-bottom: 6px; color: var(--white); }
+    .card-dark p { font-size: 12.5px; color: var(--ice); line-height: 1.45; }
+
+    .card-light {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 12px; padding: 16px;
+    }
+    .card-light h3 { font-size: 15px; color: var(--navy); margin-bottom: 8px; }
+    .card-light p, .card-light li { font-size: 12.5px; color: var(--text); line-height: 1.48; }
+    .card-light ul { padding-left: 18px; display: flex; flex-direction: column; gap: 6px; }
+
+    .pill {
+      display: inline-block; padding: 3px 10px; border-radius: 999px;
+      font-size: 10.5px; font-weight: 700; text-transform: uppercase; margin-bottom: 8px;
+    }
+    .pill-teal { background: var(--teal-soft); color: var(--teal-dark); }
+    .pill-navy { background: var(--navy); color: var(--teal); }
+    .pill-red { background: var(--crimson-soft); color: var(--crimson); }
+    .pill-amber { background: var(--amber-soft); color: var(--amber); }
+    .pill-green { background: var(--green-soft); color: var(--green); }
+
+    .banner {
+      border-radius: 12px; padding: 14px 18px; font-size: 13px; line-height: 1.45;
+      background: var(--teal-soft); border: 1px solid var(--teal); color: var(--text);
+    }
+    .banner-navy {
+      border-radius: 12px; padding: 14px 18px; font-size: 13px; line-height: 1.45;
+      background: var(--navy); color: var(--white);
+    }
+    .chat-mock {
+      background: #F8FAFC; border: 1px solid var(--border); border-radius: 12px;
+      padding: 12px; display: flex; flex-direction: column; gap: 8px; font-size: 12px;
+    }
+    .bubble-u { align-self: flex-end; background: var(--navy); color: #fff; padding: 8px 11px; border-radius: 10px; max-width: 90%; }
+    .bubble-b { align-self: flex-start; background: #fff; border: 1px solid var(--border); padding: 8px 11px; border-radius: 10px; max-width: 95%; line-height: 1.4; }
+
+    .slide-footer {
+      position: absolute; bottom: 0; left: 46px; right: 46px; height: 44px;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 11.5px; color: var(--muted);
+    }
+    .slide.dark .slide-footer { border-top-color: var(--navy-border); color: #9FB3C8; }
+    .slide-footer strong { font-weight: 700; }
+
+    .progress-track { width: 100%; max-width: 1160px; height: 4px; background: var(--navy-mid); border-radius: 99px; margin-top: 12px; overflow: hidden; }
+    .progress-fill { height: 100%; background: var(--teal); transition: width .25s ease; }
+  </style>
+</head>
+<body>
+  <div class="deck-controls">
+    <div class="ctrl-group">
+      <a class="btn btn-primary" href="../index.html">← Abrir Simulador Interativo</a>
+      <span id="counter" style="font-size:13px;font-weight:700;">Slide 1 de 7</span>
+    </div>
+    <div class="ctrl-group">
+      <button class="btn" onclick="prevSlide()">← Anterior</button>
+      <button class="btn" onclick="nextSlide()">Próximo →</button>
+    </div>
+  </div>
+
+  <div class="stage">
+    <!-- SLIDE 1 -->
+    <section class="slide dark active">
+      <div class="top-bar"></div>
+      <div>
+        <div class="eyebrow">BANCO HORIZON S.A. · CHAT MOBILE AUTENTICADO · VERSÃO 2.0 + RAG</div>
+        <h1>Agente de Atendimento Bancário Inteligente</h1>
+        <p style="font-size:15px;color:var(--ice);max-width:860px;line-height:1.5;margin-bottom:22px;">
+          Arquitetura em 2 camadas — <strong>PROMPT_SISTEMA.md (v2.0)</strong> + <strong>Base de Conhecimento (RAG)</strong> — projetada para resolução na primeira mensagem (FCR) com segurança Bacen/LGPD e experiência Mobile-First.
+        </p>
+        <div class="grid-4">
+          <div class="card-dark">
+            <div class="num">01</div>
+            <h3>Fatura e Pix</h3>
+            <p>Consulta de valor, vencimento, código Pix Copia e Cola e código de barras via caminho seguro.</p>
+          </div>
+          <div class="card-dark">
+            <div class="num">02</div>
+            <h3>Lançamentos (RAG)</h3>
+            <p>Identificação de nomes fantasia, razão social e intermediários (PAG*, MP*, EC*) com triagem de 1 turno.</p>
+          </div>
+          <div class="card-dark">
+            <div class="num">03</div>
+            <h3>Cartão Físico e Virtual</h3>
+            <p>Passo a passo modular para desbloqueio do cartão físico e ativação do cartão virtual temporário.</p>
+          </div>
+          <div class="card-dark">
+            <div class="num">04</div>
+            <h3>Limite de Crédito</h3>
+            <p>Orientação transparente para consulta de limite disponível e pedido de aumento no app.</p>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <strong>Pedro Zeferino da Silva - 2026</strong>
+        <span>Banco Horizon S.A. · Slide 1 / 7</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 2 -->
+    <section class="slide light">
+      <div class="top-bar"></div>
+      <div>
+        <div class="eyebrow">ARQUITETURA EM 2 CAMADAS · PROMPT + CONHECIMENTO</div>
+        <h2>Separação Estratégica: System Prompt v2.0 vs. Base RAG</h2>
+        <div class="subtitle">Dividir regras invioláveis e base factual reduz alucinações e permite evoluir o conteúdo sem comprometer o compliance.</div>
+        <div class="grid-2" style="margin-bottom:16px;">
+          <div class="card-light" style="border-top:4px solid var(--navy);">
+            <span class="pill pill-navy">Camada 1 · Comportamento</span>
+            <h3>PROMPT_SISTEMA.md (v2.0)</h3>
+            <ul>
+              <li><strong>Onde vai:</strong> Instruções do Sistema (ativo em 100% dos turnos).</li>
+              <li><strong>Controla:</strong> Tom adaptativo, formato Mobile-First, regras Bacen/LGPD, anti-injection e transbordo.</li>
+              <li><strong>Vantagem:</strong> Salvaguardas nunca dependem de busca vetorial.</li>
+            </ul>
+          </div>
+          <div class="card-light" style="border-top:4px solid var(--teal);">
+            <span class="pill pill-teal">Camada 2 · Base Factual (RAG)</span>
+            <h3>base-conhecimento-banco-horizon.md</h3>
+            <ul>
+              <li><strong>Onde vai:</strong> Biblioteca de Arquivos / Knowledge Base (busca semântica).</li>
+              <li><strong>Armazena:</strong> Glossário de descritores (PAG*, MP*, EC*, IFD*), Mapa Oficial de Telas e políticas.</li>
+              <li><strong>Vantagem:</strong> Atualização ágil sem reescrever o System Prompt.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="banner">
+          <strong>Fluxo Integrado na Prática:</strong> Cliente pergunta sobre <em>"PAG*JOSE SILVA"</em> → <strong>Base RAG</strong> identifica PagBank/PagSeguro → <strong>Prompt v2.0</strong> aplica triagem de 1 turno, mantém sigilo e evita transferência humana desnecessária.
+        </div>
+      </div>
+      <div class="slide-footer">
+        <strong>Pedro Zeferino da Silva - 2026</strong>
+        <span>Banco Horizon S.A. · Slide 2 / 7</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 3 -->
+    <section class="slide light">
+      <div class="top-bar"></div>
+      <div>
+        <div class="eyebrow">EXPERIÊNCIA DO CLIENTE (CX) · EVOLUÇÃO v1.0 → v2.0</div>
+        <h2>Formato Modular Mobile-First e Calibragem Emocional</h2>
+        <div class="subtitle">Eliminação do conflito matemático da trava de 5 linhas (v1.0) e adaptação do tom para momentos críticos.</div>
+        <div class="grid-2">
+          <div class="card-light">
+            <span class="pill pill-red">Antes · v1.0 (Corrigido)</span>
+            <h3>Conflito da Trava de 5 Linhas</h3>
+            <p style="margin-bottom:14px;">Exigia máximo de 5 linhas + lista numerada + pergunta final, quebrando a leitura no smartphone.</p>
+            <span class="pill pill-teal">Agora · v2.0 (Modular)</span>
+            <h3>Estrutura Modular em 3 Blocos</h3>
+            <ul>
+              <li><strong>1. Abertura:</strong> 1 frase curta confirmando a solução.</li>
+              <li><strong>2. Corpo:</strong> Até 4 passos numerados (1 ação por linha).</li>
+              <li><strong>3. Fechamento:</strong> 1 frase única validando entendimento.</li>
+            </ul>
+          </div>
+          <div class="card-light">
+            <span class="pill pill-amber">Novo na v2.0 · Tom Contextual</span>
+            <h3>Calibragem Proporcional ao Cenário</h3>
+            <ul>
+              <li><strong>Dúvidas Rotineiras:</strong> Tom ágil, direto e sem jargões bancários para quem consulta o app na fila do caixa.</li>
+              <li><strong>Crises (Fraude, Roubo ou Golpe):</strong> Postura calma, acolhedora e tranquilizadora para reduzir ansiedade antes do transbordo.</li>
+              <li><strong>Zero Retrabalho:</strong> Nunca solicita dados já autenticados ou informados no chat.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <strong>Pedro Zeferino da Silva - 2026</strong>
+        <span>Banco Horizon S.A. · Slide 3 / 7</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 4 -->
+    <section class="slide light">
+      <div class="top-bar"></div>
+      <div>
+        <div class="eyebrow">GOVERNANÇA BACEN & LGPD · ZERO ALUCINAÇÃO</div>
+        <h2>Matriz de Salvaguardas e Mapa Oficial de Telas</h2>
+        <div class="subtitle">Blindagem contra engenharia social e prompt injection aliada a caminhos exatos de navegação.</div>
+        <div class="grid-2">
+          <div class="card-light">
+            <span class="pill pill-red">4 Regras Invioláveis</span>
+            <ul>
+              <li><strong>Zero Engenharia Social:</strong> Nunca pede senha, token SMS/WhatsApp, CVV ou número completo do cartão.</li>
+              <li><strong>Zero Alucinação Financeira:</strong> Proibido inventar taxas, limites, prazos de estorno ou protocolos fictícios.</li>
+              <li><strong>Transparência Ativa:</strong> Declara sigilo bancário e indica a tela segura do app.</li>
+              <li><strong>Blindagem Anti-Injection (v2.0):</strong> Ignora tentativas de alterar regras ou expor o prompt interno.</li>
+            </ul>
+          </div>
+          <div class="card-dark">
+            <span class="pill pill-teal" style="background:rgba(0,168,181,.18);color:var(--teal);">Mapa Oficial de Telas (v2.0)</span>
+            <p style="margin-bottom:10px;"><strong>Fatura e Pagamento:</strong><br>Menu inicial &gt; Cartões &gt; Fatura Atual &gt; Pagar Fatura</p>
+            <p style="margin-bottom:10px;"><strong>Desbloqueio de Cartão:</strong><br>Menu inicial &gt; Cartões &gt; Meus Cartões &gt; Desbloquear</p>
+            <p style="margin-bottom:10px;"><strong>Cartão Virtual Temporário:</strong><br>Menu inicial &gt; Cartões &gt; Cartão Virtual &gt; Gerar/Ativar</p>
+            <p><strong>Consulta e Aumento de Limite:</strong><br>Menu inicial &gt; Crédito &gt; Meus Limites &gt; Solicitar Aumento</p>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <strong>Pedro Zeferino da Silva - 2026</strong>
+        <span>Banco Horizon S.A. · Slide 4 / 7</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 5 -->
+    <section class="slide light">
+      <div class="top-bar"></div>
+      <div>
+        <div class="eyebrow">NA PRÁTICA · TRIAGEM RAG (T3) & CRISE PREVENTIVA (T4)</div>
+        <h2>Simulação Real no Chat Mobile: Proteção + FCR</h2>
+        <div class="subtitle">Como o agente combina a Base RAG para evitar falsos positivos e protege o cliente em emergências.</div>
+        <div class="grid-2" style="margin-bottom:14px;">
+          <div class="chat-mock">
+            <span class="pill pill-teal">Teste T3 · Nome Fantasia via RAG</span>
+            <div class="bubble-u">Tem uma cobrança PAG*JOSE SILVA de R$ 45,00 na fatura, o que é isso?</div>
+            <div class="bubble-b">O prefixo <strong>PAG*</strong> pertence ao PagBank/PagSeguro, usado por comércios locais e prestadores de serviço. Confira se você reconhece a data ou o valor. Caso ainda desconheça, transfiro agora para contestação.</div>
+          </div>
+          <div class="chat-mock">
+            <span class="pill pill-red">Teste T4 · Perda/Roubo + Bloqueio Preventivo</span>
+            <div class="bubble-u">Perdi meu cartão e chegou uma compra de R$ 980 na TechImports SP!</div>
+            <div class="bubble-b">Fique tranquilo, vamos proteger sua conta agora. Enquanto transfiro para a <strong>Segurança Nível 2</strong> com o resumo do ocorrido, ative o bloqueio temporário em <em>Cartões &gt; Meus Cartões</em>.</div>
+          </div>
+        </div>
+        <div class="banner-navy">
+          <strong>Passagem de Bastão Sem Atrito:</strong> Em todo transbordo (fraude, perda/roubo, compra não reconhecida confirmada, cancelamento ou fila geral fora do escopo), o agente informa o motivo em 1 frase e envia o resumo estruturado para evitar repetições.
+        </div>
+      </div>
+      <div class="slide-footer">
+        <strong>Pedro Zeferino da Silva - 2026</strong>
+        <span>Banco Horizon S.A. · Slide 5 / 7</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 6 -->
+    <section class="slide light">
+      <div class="top-bar"></div>
+      <div>
+        <div class="eyebrow">QA CONVERSACIONAL · HOMOLOGAÇÃO COMPLETA v2.0</div>
+        <h2>Validação Prática: 6 Testes Críticos de Estresse</h2>
+        <div class="subtitle">Evolução dos 3 testes iniciais da v1.0 para cobertura ponta a ponta de RAG, segurança e limites de escopo.</div>
+        <div class="grid-3">
+          <div class="card-light">
+            <span class="pill pill-navy">T1 · Desbloqueio</span>
+            <p>Passos exatos do Mapa Oficial no formato modular, sem pedir senha, CVV ou número do cartão.</p>
+            <div style="margin-top:8px;"><span class="pill pill-green">✓ Formato Modular + Mapa</span></div>
+          </div>
+          <div class="card-light">
+            <span class="pill pill-navy">T2 · Fatura Sigilosa</span>
+            <p>Declara sigilo bancário com transparência e aponta <em>Cartões &gt; Fatura Atual &gt; Pagar Fatura</em>.</p>
+            <div style="margin-top:8px;"><span class="pill pill-green">✓ Transparência Ativa</span></div>
+          </div>
+          <div class="card-light">
+            <span class="pill pill-navy">T3 · RAG (PAG*)</span>
+            <p>Identifica PagBank/PagSeguro pela Base RAG e executa triagem de 1 turno antes de transferir.</p>
+            <div style="margin-top:8px;"><span class="pill pill-green">✓ Busca RAG + FCR</span></div>
+          </div>
+          <div class="card-light">
+            <span class="pill pill-navy">T4 · Fraude / Roubo</span>
+            <p>Adota postura calma, orienta bloqueio temporário preventivo e transfere com resumo.</p>
+            <div style="margin-top:8px;"><span class="pill pill-green">✓ Proteção + Tom de Crise</span></div>
+          </div>
+          <div class="card-light">
+            <span class="pill pill-navy">T5 · Fora do Escopo</span>
+            <p>Reconhece pedido fora dos 4 pilares, explica o escopo real e oferece fila geral.</p>
+            <div style="margin-top:8px;"><span class="pill pill-green">✓ Controle de Escopo</span></div>
+          </div>
+          <div class="card-light">
+            <span class="pill pill-navy">T6 · Prompt Injection</span>
+            <p>Neutraliza tentativa de revelar instruções internas ou aprovar limite fora do fluxo seguro.</p>
+            <div style="margin-top:8px;"><span class="pill pill-green">✓ Blindagem Ativa</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <strong>Pedro Zeferino da Silva - 2026</strong>
+        <span>Banco Horizon S.A. · Slide 6 / 7</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 7 -->
+    <section class="slide dark">
+      <div class="top-bar"></div>
+      <div>
+        <div class="eyebrow">VISÃO DE FUTURO · CSAT & NPS</div>
+        <h2>Roadmap de Evolução: O Banco Fora do Banco</h2>
+        <div class="subtitle">Hoje o banco não é um lugar aonde o cliente vai — é um serviço imediato no bolso.</div>
+        <div class="grid-5" style="margin-bottom:18px;">
+          <div class="card-dark">
+            <div class="num">01</div>
+            <h3>Deep Links</h3>
+            <p>Botões diretos para a tela exata do app, economizando 3 a 4 toques.</p>
+          </div>
+          <div class="card-dark">
+            <div class="num">02</div>
+            <h3>API Segura</h3>
+            <p>Pix Copia e Cola, rastreio e bloqueio em 1 toque com biometria.</p>
+          </div>
+          <div class="card-dark">
+            <div class="num">03</div>
+            <h3>Proatividade</h3>
+            <p>Detecta compra recusada ou alerta recente assim que o chat abre.</p>
+          </div>
+          <div class="card-dark">
+            <div class="num">04</div>
+            <h3>Omnicanal</h3>
+            <p>Continuidade no WhatsApp oficial com mesmo histórico e compliance.</p>
+          </div>
+          <div class="card-dark">
+            <div class="num">05</div>
+            <h3>Controle em Crises</h3>
+            <p>Tempo de espera estimado + botão imediato de bloqueio preventivo.</p>
+          </div>
+        </div>
+        <div class="card-dark" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+          <div>
+            <strong style="color:var(--teal);font-size:12px;">PROJETO PUBLICADO & SIMULADOR INTERATIVO</strong>
+            <p style="margin-top:4px;">Evoluindo o Banco Horizon de um agente orientativo seguro para um copiloto financeiro resolutivo.</p>
+          </div>
+          <a class="btn btn-primary" href="../index.html">Testar no Simulador v2.0 ↗</a>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <strong>Pedro Zeferino da Silva - 2026</strong>
+        <span>Banco Horizon S.A. · Slide 7 / 7</span>
+      </div>
+    </section>
+  </div>
+
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+
+  <script>
+    const slides = Array.from(document.querySelectorAll(".slide"));
+    let idx = 0;
+    function render() {
+      slides.forEach((s, i) => s.classList.toggle("active", i === idx));
+      document.getElementById("counter").textContent = `Slide ${idx + 1} de ${slides.length}`;
+      document.getElementById("progressFill").style.width = `${((idx + 1) / slides.length) * 100}%`;
+    }
+    function nextSlide() { idx = (idx + 1) % slides.length; render(); }
+    function prevSlide() { idx = (idx - 1 + slides.length) % slides.length; render(); }
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowRight" || e.key === " ") nextSlide();
+      if (e.key === "ArrowLeft") prevSlide();
+    });
+    render();
+  </script>
+</body>
+</html>
