@@ -13,22 +13,22 @@
   </a>
 </p>
 
-
-
 ---
+
 ## Pré-visualização do Projeto (v2.0)
 
 ### Simulador Web Interativo + Inspetor RAG & QA (T1–T6)
+>
 > Clique na imagem abaixo para testar o simulador ao vivo no navegador.
 
 [![Simulador Web Banco Horizon v2.0](./docs/imgs/preview-simulador-v2.png)](https://pedrozef.github.io/agente-ia-atendimento-ao-cliente/)
 
 ### Apresentação Executiva Interativa (7 Slides · v2.0)
+>
 > Clique na imagem abaixo para navegar pelos slides no navegador.
 
 [![Apresentação Executiva Banco Horizon v2.0](./docs/imgs/preview-apresentacao-v2.png)](https://pedrozef.github.io/agente-ia-atendimento-ao-cliente/apresentacao/slides.html)
 ---
-
 
 Projeto de Engenharia de Prompt, Arquitetura Conversacional em 2 Camadas (**System Prompt v2.0 + Base de Conhecimento RAG**) e **Simulador Web Interativo** com front-end desacoplado (`HTML`, `CSS` e `JavaScript`), desenvolvido para o chat autenticado do aplicativo mobile do **Banco Horizon S.A.** com foco em Resolução no Primeiro Contato (FCR), Experiência Mobile-First e conformidade Bacen/LGPD.
 **Base Metodológica:** Desafio Criativo de Prompting ([`docs/`](docs/))
@@ -117,14 +117,14 @@ A arquitetura do projeto cobre:
 
 ## 🧩 Navegação Passo a Passo dos Documentos
 
-| Etapa                    | Arquivo Detalhado                                                        | Conteúdo Central                                                                        |
+| Etapa | Arquivo Detalhado | Conteúdo Central |
 | :----------------------- | :----------------------------------------------------------------------- | :--------------------------------------------------------------------------------------- |
-| **Passo 1**        | [passo-1-definicao-agente.md](docs/passo-1-definicao-agente.md)           | Papel do Agente, público-alvo (cliente em mobilidade) e escopo restrito de atendimento. |
-| **Passo 2**        | [passo-2-regras-e-conduta.md](docs/passo-2-regras-e-conduta.md)           | Tom e formato (até 5 linhas, listas numeradas), políticas de segurança e compliance.  |
-| **Passo 3**        | [passo-3-prompt-final-e-testes.md](docs/passo-3-prompt-final-e-testes.md) | Prompt unificado, execução de 3 testes difíceis e homologação do comportamento.     |
-| **Diagnóstico**   | [analise-melhorias-slides.md](docs/analise-melhorias-slides.md)           | Análise crítica do deck compartilhado no Gemini Canvas e plano de melhorias.           |
-| **Apresentação** | [apresentacao/slides.html](apresentacao/slides.html)                      | Apresentação executiva e técnica interativa em HTML5/CSS/JS (16:9, 7 slides).         |
-| **Prompt Pronto**  | [PROMPT_SISTEMA.md](PROMPT_SISTEMA.md)                                    | Prompt pronto para implantação e homologação em LLMs (GPT-4, Claude, Gemini).        |
+| **Passo 1** | [passo-1-definicao-agente.md](docs/passo-1-definicao-agente.md) | Papel do Agente, público-alvo (cliente em mobilidade) e escopo restrito de atendimento. |
+| **Passo 2** | [passo-2-regras-e-conduta.md](docs/passo-2-regras-e-conduta.md) | Tom e formato (até 5 linhas, listas numeradas), políticas de segurança e compliance. |
+| **Passo 3** | [passo-3-prompt-final-e-testes.md](docs/passo-3-prompt-final-e-testes.md) | Prompt unificado, execução de 3 testes difíceis e homologação do comportamento. |
+| **Diagnóstico** | [analise-melhorias-slides.md](docs/analise-melhorias-slides.md) | Análise crítica do deck compartilhado no Gemini Canvas e plano de melhorias. |
+| **Apresentação** | [apresentacao/slides.html](apresentacao/slides.html) | Apresentação executiva e técnica interativa em HTML5/CSS/JS (16:9, 7 slides). |
+| **Prompt Pronto** | [PROMPT_SISTEMA.md](PROMPT_SISTEMA.md) | Prompt pronto para implantação e homologação em LLMs (GPT-4, Claude, Gemini). |
 
 ## 📚 Arquivos Markdown da Pasta `docs`
 
