@@ -41,7 +41,7 @@ Projeto de Engenharia de Prompt, Arquitetura Conversacional em 2 Camadas (**Syst
 ## Demonstração ao Vivo e Apresentação (v2.0)
 
 - **Simulador Web Interativo (GitHub Pages):** [Acessar Simulador do Banco Horizon](https://pedrozef.github.io/agente-ia-atendimento-ao-cliente/)
-- **Apresentação Executiva Interativa (GitHub Pages):** [Abrir Slides v2.0 no Navegador](https://pedrozef.github.io/agente-ia-atendimento-ao-cliente/apresentacao/slides.html)
+- **Apresentação Executiva Interativa (GitHub Pages):** [Abrir Slides v2.0 no Navegador](https://pedrozef.github.io/agente-ia-atendimento-ao-cliente/)
 - **Apresentação em PowerPoint (7 slides):** [`apresentacao/banco-horizon-agente-ia-v2.pptx`](./apresentacao/banco-horizon-agente-ia-v2.pptx)
 
 ---
