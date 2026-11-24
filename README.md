@@ -4,7 +4,7 @@
 > **Papel:** Expert em Atendimento ao Cliente e CX Bancário  
 > **Base Metodológica:** Desafio Criativo de Prompting ([`docs/`](docs/))  
 > **Repositório GitHub:** [https://github.com/PedroZef/agente-ia-atendimento-ao-cliente.git](https://github.com/PedroZef/agente-ia-atendimento-ao-cliente.git)  
-> **Apresentação no Gemini Canvas:** [https://share.gemini.google/x6xbDsLcnR6z](https://share.gemini.google/x6xbDsLcnR6z)  
+> **Apresentação no Gemini Canvas:** [https://share.gemini.google/3POHEazGGXBT](https://share.gemini.google/3POHEazGGXBT)  
 > **Padrão de Design & Linguagem:** Inspirado em Design Systems Fintech de Alta Confiabilidade (*Revolut / Stripe UI Principles*)
 
 ---
