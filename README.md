@@ -97,7 +97,7 @@ A apresentação executiva e técnica está disponível tanto localmente quanto 
   - **Modo Tela Cheia:** Pressione `[F]` ou use o botão na barra inferior.
   - **Gráficos Interativos:** Visualização radar com Chart.js de conformidade e métricas de homologação.
   - **Visualização Rápida:** Basta abrir o arquivo `slides/index.html` em qualquer navegador (Chrome, Edge, Firefox, Safari).
-- **Versão Online no Google Gemini Canvas:** [https://share.gemini.google/x6xbDsLcnR6z](https://share.gemini.google/x6xbDsLcnR6z)
+- **Versão Online no Google Gemini Canvas:** [https://share.gemini.google/aIY7qpyB9RWP](https://share.gemini.google/aIY7qpyB9RWP)
 - **Diagnóstico e Melhorias da Apresentação:** [`docs/analise-melhorias-slides.md`](docs/analise-melhorias-slides.md)
 
 ---
