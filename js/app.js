@@ -4,9 +4,18 @@ const RAG_DESCRIPTORS = [
   { key: "mp*", name: "Mercado Pago", ex: "compras no Mercado Livre ou maquininhas Point" },
   { key: "mercpago*", name: "Mercado Pago", ex: "compras no Mercado Livre ou lojas parceiras" },
   { key: "ec*", name: "EBANX", ex: "assinaturas digitais, jogos ou compras internacionais em reais" },
+  { key: "ebn*", name: "EBANX", ex: "assinaturas digitais, jogos ou compras internacionais em reais" },
+  { key: "sq*", name: "SumUp", ex: "restaurantes, profissionais autônomos e pequenos negócios" },
+  { key: "sumup*", name: "SumUp", ex: "restaurantes, profissionais autônomos e pequenos negócios" },
   { key: "ifd*", name: "iFood", ex: "pedidos de delivery de comida, mercado ou farmácia" },
-  { key: "uber*", name: "Uber", ex: "corridas de aplicativo ou entregas" },
-  { key: "stone*", name: "Stone / Ton", ex: "pagamentos realizados em maquininhas da rede Stone" }
+  { key: "uber*", name: "Uber", ex: "corridas de aplicativo ou entregas rápidas" },
+  { key: "99app*", name: "99", ex: "corridas de aplicativo ou entregas rápidas" },
+  { key: "amzn*", name: "Amazon Brasil / Prime", ex: "compras no site ou assinatura Amazon Prime" },
+  { key: "amazon*", name: "Amazon Brasil / Prime", ex: "compras no site ou assinatura Amazon Prime" },
+  { key: "google*", name: "Google Play / Serviços Google", ex: "assinaturas de apps, armazenamento em nuvem ou compras in-app" },
+  { key: "apple.com/bill", name: "Apple / App Store", ex: "assinaturas de apps, armazenamento iCloud ou compras in-app" },
+  { key: "stone*", name: "Stone / Ton", ex: "pagamentos realizados em maquininhas da rede Stone" },
+  { key: "ton*", name: "Stone / Ton", ex: "pagamentos realizados em maquininhas da rede Stone/Ton" }
 ];
 
 const TESTS = {

@@ -21,20 +21,20 @@
 ### Simulador Web Interativo + Inspetor RAG & QA (T1–T6)
 > Clique na imagem abaixo para testar o simulador ao vivo no navegador.
 
-[![Simulador Web Banco Horizon v2.0](./docs/imagens/preview-simulador-v2.png)](https://pedrozef.github.io/agente-ia-atendimento-ao-cliente/)
+[![Simulador Web Banco Horizon v2.0](./docs/imgs/preview-simulador-v2.png)](https://pedrozef.github.io/agente-ia-atendimento-ao-cliente/)
 
 ### Apresentação Executiva Interativa (7 Slides · v2.0)
 > Clique na imagem abaixo para navegar pelos slides no navegador.
 
-[![Apresentação Executiva Banco Horizon v2.0](./docs/imagens/preview-apresentacao-v2.png)](https://pedrozef.github.io/agente-ia-atendimento-ao-cliente/apresentacao/slides.html)
+[![Apresentação Executiva Banco Horizon v2.0](./docs/imgs/preview-apresentacao-v2.png)](https://pedrozef.github.io/agente-ia-atendimento-ao-cliente/apresentacao/slides.html)
 ---
 
 
 Projeto de Engenharia de Prompt, Arquitetura Conversacional em 2 Camadas (**System Prompt v2.0 + Base de Conhecimento RAG**) e **Simulador Web Interativo** com front-end desacoplado (`HTML`, `CSS` e `JavaScript`), desenvolvido para o chat autenticado do aplicativo mobile do **Banco Horizon S.A.** com foco em Resolução no Primeiro Contato (FCR), Experiência Mobile-First e conformidade Bacen/LGPD.
 **Base Metodológica:** Desafio Criativo de Prompting ([`docs/`](docs/))
-**Repositório GitHub:** [https://github.com/PedroZef/agente-ia-atendimento-ao-cliente.git](https://github.com/PedroZef/agente-ia-atendimento-ao-cliente.git)
+**Repositório GitHub:** [https://github.com/PedroZef/agente-ia-atendimento-ao-cliente](https://github.com/PedroZef/agente-ia-atendimento-ao-cliente)
 
-- **Apresentação no Gemini Canvas (v2.0):** [Visualizar no Gemini Canvas] [https://share.gemini.google/x6xbDsLcnR6z](https://share.gemini.google/x6xbDsLcnR6z)
+- **Apresentação no Gemini Canvas (v2.0):** [Visualizar no Gemini Canvas](https://share.gemini.google/x6xbDsLcnR6z)
 
 ---
 
@@ -42,7 +42,7 @@ Projeto de Engenharia de Prompt, Arquitetura Conversacional em 2 Camadas (**Syst
 
 - **Simulador Web Interativo (GitHub Pages):** [Acessar Simulador do Banco Horizon](https://pedrozef.github.io/agente-ia-atendimento-ao-cliente/)
 - **Apresentação Executiva Interativa (GitHub Pages):** [Abrir Slides v2.0 no Navegador](https://pedrozef.github.io/agente-ia-atendimento-ao-cliente/apresentacao/slides.html)
-- **Apresentação em PowerPoint (7 slides):** [`apresentacao/banco-horizon-agente-ia-v2.pptx`](./apresentacao/banco-horizon-agente-ia-v2.pptx)
+- **Apresentação em PowerPoint (7 slides):** [`docs/imgs/banco-horizon-agente-ia-v2.pptx`](./docs/imgs/banco-horizon-agente-ia-v2.pptx)
 
 ---
 
@@ -87,19 +87,18 @@ agente-ia-atendimento-ao-cliente/
 │   ├── slides.html                               # Apresentação interativa v2.0 (7 slides - GitHub Pages)
 │   ├── css/
 │   │   └── slides.css                            # Estilos da apresentação web
-│   ├── js/
-│   │   └── slides.js                             # Navegação e barra de progresso dos slides
-│   └── banco-horizon-agente-ia-v2.pptx           # Apresentação executiva em PowerPoint (7 slides)
-├── docs/
-│   ├── guia-implantacao-e-testes-v2.md           # Guia Prompt vs. RAG e roteiro dos 6 testes (T1–T6)
-│   ├── analise-fullstack.md                      # Auditoria técnica e padronização full stack
-│   └── evidencias/                               # Capturas de tela originais do desafio
-└── historico-v1/                                 # Artefatos preservados da versão inicial (MVP v1.0)
-    ├── passo-1-definicao-agente.md
-    ├── passo-2-regras-e-conduta.md
-    ├── passo-3-prompt-final-e-testes.md
-    ├── analise-melhorias-slides.md
-    └── slides-v1/
+│   └── js/
+│       └── slides.js                             # Navegação e barra de progresso dos slides
+└── docs/
+    ├── guia-implantacao-e-testes-v2.md           # Guia Prompt vs. RAG e roteiro dos 6 testes (T1–T6)
+    ├── analise-fullstack.md                      # Auditoria técnica e padronização full stack
+    ├── analise-melhorias-slides.md               # Diagnóstico e melhorias da apresentação
+    ├── passo-1-definicao-agente.md               # Passo 1: Definição do papel, público e escopo
+    ├── passo-2-regras-e-conduta.md               # Passo 2: Regras de conduta, compliance e transbordo
+    ├── passo-3-prompt-final-e-testes.md          # Passo 3: Prompt consolidado e testes de estresse
+    ├── evidencias/                               # Capturas de tela originais do desafio
+    └── imgs/                                     # Previews do simulador, apresentação, assinatura e PPTX
+        └── banco-horizon-agente-ia-v2.pptx       # Apresentação executiva em PowerPoint (7 slides)
 ```
 
 ## 📌 Visão Geral do Projeto
@@ -124,11 +123,13 @@ A arquitetura do projeto cobre:
 | **Passo 2**        | [passo-2-regras-e-conduta.md](docs/passo-2-regras-e-conduta.md)           | Tom e formato (até 5 linhas, listas numeradas), políticas de segurança e compliance.  |
 | **Passo 3**        | [passo-3-prompt-final-e-testes.md](docs/passo-3-prompt-final-e-testes.md) | Prompt unificado, execução de 3 testes difíceis e homologação do comportamento.     |
 | **Diagnóstico**   | [analise-melhorias-slides.md](docs/analise-melhorias-slides.md)           | Análise crítica do deck compartilhado no Gemini Canvas e plano de melhorias.           |
-| **Apresentação** | [slides/index.html](slides/index.html)                                    | Apresentação executiva e técnica interativa em HTML5/CSS/JS (16:9, 9 slides).         |
+| **Apresentação** | [apresentacao/slides.html](apresentacao/slides.html)                      | Apresentação executiva e técnica interativa em HTML5/CSS/JS (16:9, 7 slides).         |
 | **Prompt Pronto**  | [PROMPT_SISTEMA.md](PROMPT_SISTEMA.md)                                    | Prompt pronto para implantação e homologação em LLMs (GPT-4, Claude, Gemini).        |
 
 ## 📚 Arquivos Markdown da Pasta `docs`
 
+- [guia-implantacao-e-testes-v2.md](docs/guia-implantacao-e-testes-v2.md) — guia de implantação Prompt vs. RAG e bateria dos 6 testes (T1–T6).
+- [analise-fullstack.md](docs/analise-fullstack.md) — auditoria técnica e padronização full stack (v1.0 → v2.0).
 - [passo-1-definicao-agente.md](docs/passo-1-definicao-agente.md) — definição do papel, público-alvo e escopo do agente.
 - [passo-2-regras-e-conduta.md](docs/passo-2-regras-e-conduta.md) — regras de conduta, tom de voz, segurança e transbordo.
 - [passo-3-prompt-final-e-testes.md](docs/passo-3-prompt-final-e-testes.md) — prompt final consolidado e testes em casos difíceis.
@@ -185,11 +186,12 @@ Conforme estipulado no Passo 3 das referências:
 
 A apresentação executiva e técnica está disponível tanto localmente quanto na nuvem:
 
-- **Versão Interativa Offline (HTML5/Chart.js):** [`slides/index.html`](slides/index.html)
-  - **Navegação por Teclado:** Setas `[←]` e `[→]`, barra de espaço, ou `[Home]` / `[End]`.
-  - **Modo Tela Cheia:** Pressione `[F]` ou use o botão na barra inferior.
-  - **Gráficos Interativos:** Visualização radar com Chart.js de conformidade e métricas de homologação.
-  - **Visualização Rápida:** Basta abrir o arquivo `slides/index.html` em qualquer navegador (Chrome, Edge, Firefox, Safari).
+- **Versão Interativa Offline (HTML5/CSS3/JS — 7 Slides):** [`apresentacao/slides.html`](apresentacao/slides.html)
+  - **Navegação por Teclado e Botões:** Setas `[←]` e `[→]`, barra de espaço e botões `Anterior` / `Próximo`.
+  - **Indicadores Visuais:** Contador de slides (`Slide X de 7`) e barra de progresso animada.
+  - **Integração Direta:** Atalho no topo e no encerramento para abrir o simulador interativo ([`index.html`](index.html)).
+  - **Visualização Rápida:** Basta abrir o arquivo [`apresentacao/slides.html`](apresentacao/slides.html) em qualquer navegador (Chrome, Edge, Firefox, Safari).
+- **Apresentação em PowerPoint (7 Slides):** [`docs/imgs/banco-horizon-agente-ia-v2.pptx`](./docs/imgs/banco-horizon-agente-ia-v2.pptx)
 - **Versão Online no Google Gemini Canvas:** [https://share.gemini.google/x6xbDsLcnR6z](https://share.gemini.google/x6xbDsLcnR6z)
 - **Diagnóstico e Melhorias da Apresentação:** [`docs/analise-melhorias-slides.md`](docs/analise-melhorias-slides.md)
 

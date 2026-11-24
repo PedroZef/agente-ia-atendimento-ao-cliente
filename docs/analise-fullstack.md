@@ -16,7 +16,7 @@ A auditoria do repositório original identificou 5 oportunidades de evolução e
 - **Arquitetura em 2 Camadas:** Separação clara entre `PROMPT_SISTEMA.md` (Camada 1 — Governança e Tom) e `base-conhecimento/base-conhecimento-banco-horizon.md` (Camada 2 — RAG).
 - **QA Expandido:** Evolução de 3 para **6 testes críticos de estresse (T1 a T6)** documentados em `docs/guia-implantacao-e-testes-v2.md`.
 - **Simulador Web Full-Stack (`index.html`):** Interface mobile do Banco Horizon com motor RAG local, monitor de guardrails em tempo real, executor automático de T1–T6 e suporte opcional à API do Gemini.
-- **Apresentação Executiva Unificada (`apresentacao/`):** Sincronizada em dois formatos — PowerPoint (`banco-horizon-agente-ia-v2.pptx`) e web interativa (`slides.html`) pronta para GitHub Pages.
+- **Apresentação Executiva Unificada:** Sincronizada em dois formatos — PowerPoint (`docs/imgs/banco-horizon-agente-ia-v2.pptx`) e web interativa (`apresentacao/slides.html`) pronta para GitHub Pages.
 - **Preservação de Histórico (`historico-v1/`):** Todos os artefatos originais do MVP e a versão antiga dos slides preservados sem perda de rastreabilidade.
 
 ---
