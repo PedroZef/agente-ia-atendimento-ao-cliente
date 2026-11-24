@@ -51,12 +51,23 @@ document.addEventListener("DOMContentLoaded", () => {
     chatEl.scrollTop = chatEl.scrollHeight;
   }
 
-  function updateInspector({ layer, tone, compliance, route, log }) {
+  function updateInspector({ layer, tone, compliance, route, routeClass = "val-teal", complianceClass = "val-ok", log }) {
+    const complianceEl = document.getElementById("mCompliance");
+    const routeEl = document.getElementById("mRoute");
     document.getElementById("mLayer").textContent = layer;
     document.getElementById("mTone").textContent = tone;
-    document.getElementById("mCompliance").textContent = compliance;
-    document.getElementById("mRoute").textContent = route;
+    complianceEl.textContent = compliance;
+    complianceEl.className = `val ${complianceClass}`;
+    routeEl.textContent = route;
+    routeEl.className = `val ${routeClass}`;
     document.getElementById("ragLog").innerHTML = log;
+  }
+
+  function setActiveTest(testId = null) {
+    testButtons.forEach((btn) => {
+      const isActive = testId !== null && btn.getAttribute("data-test") === testId;
+      btn.classList.toggle("active", isActive);
+    });
   }
 
   function evaluateMessage(raw) {
@@ -114,6 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
           tone: "Calmo e Acolhedor (Crise)",
           compliance: "Zero dados sensíveis pedidos",
           route: "Transbordo Segurança Nível 2",
+          routeClass: "val-alert",
           log:
             "<strong>[PROTOCOLO DE CRISE]</strong> Gatilho de perda/fraude detectado.<br>" +
             "<strong>[AÇÃO PREVENTIVA]</strong> Orientado bloqueio temporário em <em>Cartões &gt; Meus Cartões</em>.<br>" +
@@ -139,15 +151,17 @@ document.addEventListener("DOMContentLoaded", () => {
           "3. Caso ainda não reconheça a compra após conferir, me avise aqui para eu transferir você imediatamente para contestação.\n\n" +
           "Você reconhece esse lançamento ou prefere abrir contestação com um especialista?",
         inspector: {
-          layer: "Camada 2 (RAG Bloco 2) + Camada 1",
+          layer: "Camada 2 (RAG Bloco 2)",
           tone: "Ágil e Esclarecedor",
-          compliance: "Sigilo preservado · Conforme",
+          compliance: "Sigilo preservado · OK",
           route: "Triagem 1 Turno (FCR)",
+          routeClass: "val-teal",
           log:
             `<strong>[RAG MATCH]</strong> Bloco 2 — Glossário de Descritores (${
               hit ? `${hit.key.toUpperCase()} → ${hit.name}` : "Regra geral de nome fantasia"
             }).<br>` +
-            "<strong>[FCR]</strong> Evita transferência prematura antes de confirmar desconhecimento."
+            "<strong>[GUARDRAIL]</strong> Sigilo bancário validado · Nenhum dado sensível solicitado.<br>" +
+            "<strong>[FCR ATIVO]</strong> Triagem de 1 turno aplicada antes de acionar transbordo humano."
         }
       };
     }
@@ -250,29 +264,41 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   }
 
-  function sendUserMessage(text) {
+  function sendUserMessage(text, instant = false) {
     if (!text.trim()) return;
     appendMsg("user", text);
     const res = evaluateMessage(text);
-    setTimeout(() => {
+    const deliver = () => {
       appendMsg("bot", res.reply, res.badge, res.badgeClass);
       updateInspector(res.inspector);
-    }, 220);
+    };
+    if (instant) {
+      deliver();
+    } else {
+      setTimeout(deliver, 220);
+    }
   }
 
-  function resetChat() {
+  function resetChat(withDemo = false) {
     chatEl.innerHTML = "";
+    setActiveTest(null);
     appendMsg(
       "bot",
       "Olá! Sou o Assistente Virtual do Banco Horizon. Posso ajudar com fatura e Pix, lançamentos, cartões ou limite de crédito.\n\nComo posso ajudar você agora?",
       "Sessão Segura",
       "tag-ok"
     );
+    if (withDemo) {
+      setActiveTest("T3");
+      sendUserMessage(TESTS.T3, true);
+      return;
+    }
     updateInspector({
       layer: "Aguardando mensagem",
       tone: "Ágil / Objetivo",
       compliance: "100% Conforme",
       route: "Autoatendimento (FCR)",
+      routeClass: "val-teal",
       log: "<strong>[SISTEMA PRONTO]</strong> Envie uma mensagem no celular ao lado ou clique em um dos 6 testes de estresse (T1–T6)."
     });
   }
@@ -281,19 +307,21 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
     const val = inputEl.value;
     inputEl.value = "";
+    setActiveTest(null);
     sendUserMessage(val);
   });
 
-  btnReset.addEventListener("click", resetChat);
+  btnReset.addEventListener("click", () => resetChat(false));
 
   testButtons.forEach((btn) => {
     btn.addEventListener("click", () => {
       const testId = btn.getAttribute("data-test");
       if (TESTS[testId]) {
+        setActiveTest(testId);
         sendUserMessage(TESTS[testId]);
       }
     });
   });
 
-  resetChat();
+  resetChat(true);
 });

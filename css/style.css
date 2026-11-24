@@ -313,7 +313,7 @@ body {
 
 .tests-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 10px;
 }
 
@@ -321,15 +321,20 @@ body {
   text-align: left;
   padding: 11px 12px;
   background: #f8fafc;
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   border-radius: 10px;
   cursor: pointer;
   transition: all 0.15s ease;
 }
 
-.test-btn:hover {
+.test-btn:hover,
+.test-btn.active {
   border-color: var(--teal);
   background: var(--teal-soft);
+}
+
+.test-btn.active {
+  box-shadow: 0 0 0 1px var(--teal);
 }
 
 .test-btn strong {
@@ -348,9 +353,25 @@ body {
 
 .inspector-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 10px;
   margin-bottom: 12px;
+}
+
+@media (max-width: 1120px) {
+  .tests-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .inspector-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .tests-grid,
+  .inspector-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .metric {
@@ -376,6 +397,18 @@ body {
 
 .metric .val-ok {
   color: var(--green);
+}
+
+.metric .val-teal {
+  color: var(--teal-dark);
+}
+
+.metric .val-warn {
+  color: var(--amber);
+}
+
+.metric .val-alert {
+  color: var(--crimson);
 }
 
 .rag-box {
