@@ -18,16 +18,15 @@
 ## Pré-visualização do Projeto (v2.0)
 
 ### Simulador Web Interativo + Inspetor RAG & QA (T1–T6)
->
 > Clique na imagem abaixo para testar o simulador ao vivo no navegador.
 
 [![Simulador Web Banco Horizon v2.0](./docs/imgs/preview-simulador-v2.png)](https://pedrozef.github.io/agente-ia-atendimento-ao-cliente/)
 
 ### Apresentação Executiva Interativa (7 Slides · v2.0)
->
 > Clique na imagem abaixo para navegar pelos slides no navegador.
 
 [![Apresentação Executiva Banco Horizon v2.0](./docs/imgs/preview-apresentacao-v2.png)](https://pedrozef.github.io/agente-ia-atendimento-ao-cliente/apresentacao/slides.html)
+
 ---
 
 Projeto de Engenharia de Prompt, Arquitetura Conversacional em 2 Camadas (**System Prompt v2.0 + Base de Conhecimento RAG**) e **Simulador Web Interativo** com front-end desacoplado (`HTML`, `CSS` e `JavaScript`), desenvolvido para o chat autenticado do aplicativo mobile do **Banco Horizon S.A.** com foco em Resolução no Primeiro Contato (FCR), Experiência Mobile-First e conformidade Bacen/LGPD.
